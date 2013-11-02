@@ -1,0 +1,16 @@
+site :opscode
+
+cookbook 'mysql'
+cookbook 'database'
+cookbook 'apache'
+cookbook 'nginx'
+cookbook 'postfix'
+cookbook 'xml'
+cookbook 'git'
+cookbook 'subversion'
+cookbook 'vim'
+cookbook 'nodejs', github: 'mdxp/nodejs-cookbook'
+cookbook 'redisio', github: 'brianbianco/redisio'
+cookbook 'base', github: 'ptahdunbar/base-cookbook'
+cookbook 'mariadb', github: 'ptahdunbar/mariadb-cookbook'
+cookbook 'php', github: 'ptahdunbar/php-cookbook'

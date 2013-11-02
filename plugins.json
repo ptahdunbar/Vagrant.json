@@ -1,0 +1,8 @@
+[
+    "vagrant-exec",
+    "vagrant-cachier",
+    "vagrant-omnibus",
+    "vagrant-berkshelf",
+    "vagrant-pristine",
+    "vagrant-hostsupdater"
+]
