@@ -1,19 +1,6 @@
 .vagrant
 .idea
-.kitchen
-cookbooks
-Berksfile.lock
-*~
-*#
-.#*
-\#*#
-.*.sw[a-z]
-*.un~
-
-# Bundler
-Berksfile.lock
-Gemfile.lock
-bin/*
-.bundle/*
-
-boxes.json
+nbproject
+cookbooks/
+vendor/cookbooks/
+Varrgrant.json

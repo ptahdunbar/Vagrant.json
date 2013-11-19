@@ -5,14 +5,14 @@ require 'rubygems'
 require 'json'
 
 # Can't run vagrant without Vagrantfile.json
-unless File.exists?("boxes.json") then
-    raise "Please create a boxes.json configuration file to configure your vagrant environment."
+unless File.exists?("Varrgrant.json") then
+    raise "Please create a Varrgrant.json configuration file to configure your vagrant environment."
     exit
 end
 
-boxes = JSON.parse(File.read("boxes.json"));
+boxes = JSON.parse(File.read("Varrgrant.json"));
 
-puts "[info] Loading box configuration from boxes.json"
+puts "[info] Loading box configuration from Varrgrant.json"
 
 # Vagrantfile API/syntax version. Don't touch unless you know what you're doing!
 VAGRANTFILE_API_VERSION = "2"

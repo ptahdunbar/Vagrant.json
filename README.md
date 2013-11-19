@@ -1,10 +1,9 @@
 # Varrgrant
 
-> Bootstrap your local development environment with first-class support for vagrant and chef.
+> Bootstrap an OS stack with first-class support for vagrant and chef.
 
 ## Requirements
 * Latest version vagrant; [http://vagrantup.com](http://www.vagrantup.com/)
-* Berkshelf; `sudo gem install berkshelf`
 
 Run these commands in the project's working directory.
 
@@ -16,11 +15,9 @@ vagrant plugin bundle
 # Usage
 
 * Configure your nodes.
-    * `cp boxes-sample.json to boxes.json`
+    * `cp Varrgrant-sample.json to Varrgrant.json`
 * Set the base vagrant box to use
     * `vim +24 Vagrantfile`
-* Install/Update chef cookbooks
-    * `berks install`
 * Run vagrant
     * `vagrant up`
 
@@ -56,8 +53,8 @@ Varrgrant comes bundled with these vagrant plugins
 * [vagrant-pristine](https://github.com/fgrehm/vagrant-pristine)
 * [vagrant-hostsupdater](https://github.com/cogitatio/vagrant-hostsupdater)
 
-## What is Boxes.json?
-Boxes.json is vagrant sugar to help make setting up multi-node environments super clear and simple.
+## What is Varrgrant.json?
+Varrgrant.json is vagrant sugar to help make setting up multi-node environments super clear and simple.
 
 ### Boxes Format
 
