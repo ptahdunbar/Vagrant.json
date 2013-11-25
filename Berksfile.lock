@@ -1,0 +1,126 @@
+{
+  "sources": {
+    "mysql": {
+      "locked_version": "4.0.6"
+    },
+    "database": {
+      "locked_version": "1.5.2"
+    },
+    "logrotate": {
+      "locked_version": "1.4.0"
+    },
+    "apache2": {
+      "locked_version": "1.8.4"
+    },
+    "nginx": {
+      "locked_version": "0.101.6"
+    },
+    "postfix": {
+      "locked_version": "3.0.2"
+    },
+    "xml": {
+      "locked_version": "1.2.0"
+    },
+    "git": {
+      "locked_version": "2.7.0"
+    },
+    "subversion": {
+      "locked_version": "1.1.0"
+    },
+    "vim": {
+      "locked_version": "1.0.2"
+    },
+    "sudo": {
+      "locked_version": "2.2.2"
+    },
+    "nodejs": {
+      "locked_version": "1.3.0",
+      "git": "git://github.com/mdxp/nodejs-cookbook.git",
+      "ref": "4c685529e7a8db0222b17407367e8b309afd3137"
+    },
+    "redisio": {
+      "locked_version": "1.7.0",
+      "git": "git://github.com/brianbianco/redisio.git",
+      "ref": "be95852f73dcc9a8ef48db394044525ca48cfd70"
+    },
+    "timezone-ii": {
+      "locked_version": "0.2.0",
+      "git": "git://github.com/L2G/timezone-ii.git",
+      "ref": "97ff6559a1d87b8db9b536bfc32195245aadcda7"
+    },
+    "base": {
+      "locked_version": "1.0.0",
+      "git": "git://github.com/ptahdunbar/base-cookbook.git",
+      "ref": "c07aae1145e584b7ed54045cca9d7f5f8da9265f"
+    },
+    "database_server": {
+      "locked_version": "0.1.0",
+      "git": "git://github.com/ptahdunbar/database_server-cookbook.git",
+      "ref": "f5e8250e0dfe4ba7c9a63a06404c7ff7b9452b42"
+    },
+    "php": {
+      "locked_version": "0.1.0",
+      "git": "git://github.com/ptahdunbar/php-cookbook.git",
+      "ref": "06863115c29f0a714db40b72ff51194c857d9c5e"
+    },
+    "web_server": {
+      "locked_version": "0.1.0",
+      "git": "git://github.com/ptahdunbar/web_server-cookbook.git",
+      "ref": "8356e1ae7c15f25db1cfb33dfa6251d0e7f97a50"
+    },
+    "openssl": {
+      "locked_version": "1.1.0"
+    },
+    "build-essential": {
+      "locked_version": "1.4.2"
+    },
+    "postgresql": {
+      "locked_version": "3.3.4"
+    },
+    "apt": {
+      "locked_version": "2.3.0"
+    },
+    "aws": {
+      "locked_version": "1.0.0"
+    },
+    "xfs": {
+      "locked_version": "1.1.0"
+    },
+    "runit": {
+      "locked_version": "1.4.0"
+    },
+    "yum": {
+      "locked_version": "2.4.2"
+    },
+    "bluepill": {
+      "locked_version": "2.3.0"
+    },
+    "rsyslog": {
+      "locked_version": "1.9.0"
+    },
+    "ohai": {
+      "locked_version": "1.0.2"
+    },
+    "dmg": {
+      "locked_version": "2.0.8"
+    },
+    "windows": {
+      "locked_version": "1.11.0"
+    },
+    "chef_handler": {
+      "locked_version": "1.1.4"
+    },
+    "ulimit": {
+      "locked_version": "0.3.2"
+    },
+    "ntp": {
+      "locked_version": "1.5.0"
+    },
+    "ssh_known_hosts": {
+      "locked_version": "1.1.0"
+    },
+    "partial_search": {
+      "locked_version": "1.0.6"
+    }
+  }
+}

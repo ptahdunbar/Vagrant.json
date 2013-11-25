@@ -61,8 +61,29 @@ Varrgrant.json is vagrant sugar to help make setting up multi-node environments 
 ```
 [
 	{
-		"name": "vagrant",
-		"ip": "10.10.10.12",
+		"hostname": [
+			"varrgrant.dev"
+		],
+		"ips": ["10.10.10.100"],
+		"chef" : {
+			"recipes" : [
+				//"recipes[cookbook]"
+			],
+			"json" : {
+
+			}
+		}
+	}
+]
+```
+
+```
+[
+	{
+		"hostname": [
+			"varrgrant.vm"
+		],
+		"ips": ["10.10.10.12"],
 
 		"customize": {
 			"memory": 1024,
@@ -84,7 +105,7 @@ Varrgrant.json is vagrant sugar to help make setting up multi-node environments 
 				"host": 3000
 			}
 		],
-		"synced_folder": [
+		"synced_folders": [
 			{
 				"host": "relative/on/host",
 				"guest": "/abs/path/on/guest",
@@ -98,9 +119,9 @@ Varrgrant.json is vagrant sugar to help make setting up multi-node environments 
 		],
 		
 		"chef": {
-			"recipe": [
-				"recipeOne::default",
-				"recipeTwo::default",
+			"recipes": [
+				"recipesOne::default",
+				"recipesTwo::default",
 			],
 			"json" : {
 				"apache" : {
@@ -111,7 +132,117 @@ Varrgrant.json is vagrant sugar to help make setting up multi-node environments 
 	},
 	{
 		"name": "vagrant2",
-		"ip": "10.10.10.11",
+		"ips": "10.10.10.11",
+	}
+]
+```
+
+### Varrgrant Format for AWS
+
+`vagrant up --provider=aws`
+
+```
+[
+	{
+		"hostname": [
+			"varrgrant.vm"
+		],
+		"synced_folders": [
+			{
+				"host": ".",
+				"guest": "/vagrant",
+				"id": "vagrant-root",
+				"disabled": true
+			}
+		],
+		"ami" : {
+			"id" : "ami-a73264ce",
+			"instance_type" : "t1.micro",
+			"security_groups" : ["default"]
+		},
+		"chef" : {
+			"recipes" : [
+				//"recipes[cookbook]"
+			],
+			"json" : {
+
+			}
+		}
+	}
+]
+```
+
+
+# Varrgrant for a webserver
+```
+[[
+ 	{
+ 		"hostname": [
+			"varrgrant.vm"
+		],
+ 		"ips": ["10.10.10.100"],
+ 		"hosts" : [
+ 			"example.vm"
+ 		],
+ 		"synced_folders" : [
+ 			{
+ 				"host" : ".",
+ 				"guest" : "/srv/www/example.vm"
+ 			}
+ 		],
+ 		"chef": {
+ 			"recipes": [
+ 				"base",
+ 				"web_server"
+ 			],
+ 			"json": {
+ 				"web_server": {
+ 					"platform": "apache2",
+ 					"vhosts": [
+ 						{
+ 							"name": "example.vm"
+ 						}
+ 					]
+ 				}
+ 			}
+ 		}
+ 	}
+ ]
+```
+
+Nginx
+```
+[
+	{
+		"hostname": [
+			"varrgrant.vm"
+		],
+		"ips": ["10.10.10.200"],
+		"hosts" : [
+			"example.vm"
+		],
+		"synced_folders" : [
+			{
+				"host" : ".",
+				"guest" : "/srv/www/example.vm"
+			}
+		],
+		"chef": {
+			"recipes": [
+				"base",
+				"web_server"
+			],
+			"json": {
+				"web_server": {
+					"platform": "nginx",
+					"vhosts": [
+						{
+							"name": "example.vm"
+						}
+					]
+				}
+			}
+		}
 	}
 ]
 ```

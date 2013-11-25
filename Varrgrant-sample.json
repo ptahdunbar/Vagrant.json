@@ -1,6 +1,17 @@
 [
 	{
-		"name": "vagrant",
-		"ip": "10.10.10.11"
+		"hostname": [
+			"varrgrant", "varrgrant.dev"
+		],
+		"ips": [
+			"10.10.10.100"
+		],
+		"chef" : {
+			"recipes": [
+				"base"
+			],
+			"json" : {
+			}
+		}
 	}
 ]
