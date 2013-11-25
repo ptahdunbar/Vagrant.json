@@ -1,23 +1,23 @@
-# Varrgrant
+# Vote Varrgrant for Vagrant!
 
-> Bootstrap an OS stack with first-class support for vagrant and chef.
+> Bootstrap your application stack and maintain Dev/prod parity.
 
 ## Requirements
 * Latest version vagrant; [http://vagrantup.com](http://www.vagrantup.com/)
 
-Run these commands in the project's working directory.
+# Installation
 
 ```
+git clone git@github.com:ptahdunbar/varrgrant.git varrgrant; cd varrgrant
+cp Varrgrant-sample.json Varrgrant.json
 vagrant plugin install bindler
 vagrant plugin bundle
 ```
 
 # Usage
 
-* Configure your nodes.
-    * `cp Varrgrant-sample.json to Varrgrant.json`
-* Set the base vagrant box to use
-    * `vim +24 Vagrantfile`
+* Configure your nodes (See boxes format below).
+    * `vim Varrgrant.json`
 * Run vagrant
     * `vagrant up`
 
@@ -29,18 +29,22 @@ vagrant plugin bundle
 ### Bundled Cookbooks
 * [MySQL](https://github.com/opscode-cookbooks/mysql)
 * [database](https://github.com/opscode-cookbooks/database)
-* [apache](https://github.com/opscode-cookbooks/apache)
+* [logrotate](https://github.com/opscode-cookbooks/logrotate)
+* [apache2](https://github.com/opscode-cookbooks/apache2)
 * [nginx](https://github.com/opscode-cookbooks/nginx)
 * [postfix](https://github.com/opscode-cookbooks/postfix)
 * [xml](https://github.com/opscode-cookbooks/xml)
 * [git](https://github.com/opscode-cookbooks/git)
 * [subversion](https://github.com/opscode-cookbooks/subversion)
 * [vim](https://github.com/opscode-cookbooks/vim)
+* [sudo](https://github.com/opscode-cookbooks/sudo)
 * [nodejs](https://github.com/mdxp/nodejs-cookbook)
 * [redisio](https://github.com/brianbianco/redisio)
+* [timezone-ii](https://github.com/L2G/timezone-ii)
 * [base](https://github.com/ptahdunbar/base-cookbook)
-* [mariadb](https://github.com/ptahdunbar/mariadb-cookbook)
 * [php](https://github.com/ptahdunbar/php-cookbook)
+* [web_server](https://github.com/ptahdunbar/web_server-cookbook)
+* [database_server](https://github.com/ptahdunbar/database_server-cookbook)
 
 
 ## Vagrant plugins
@@ -52,9 +56,11 @@ Varrgrant comes bundled with these vagrant plugins
 * [vagrant-berkshelf](https://github.com/riotgames/vagrant-berkshelf)
 * [vagrant-pristine](https://github.com/fgrehm/vagrant-pristine)
 * [vagrant-hostsupdater](https://github.com/cogitatio/vagrant-hostsupdater)
+* [vagrant-vmware-fusion](http://www.vagrantup.com/vmware)
+* [vagrant-aws](https://github.com/mitchellh/vagrant-aws)
 
 ## What is Varrgrant.json?
-Varrgrant.json is vagrant sugar to help make setting up multi-node environments super clear and simple.
+Varrgrant.json is vagrant sugar to simplify setting up multi-node environments, making it super clear and simple.
 
 ### Boxes Format
 
