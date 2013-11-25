@@ -8,7 +8,7 @@
 # Installation
 
 ```
-git clone git@github.com:ptahdunbar/varrgrant.git varrgrant; cd varrgrant
+git clone git://github.com/ptahdunbar/varrgrant.git varrgrant; cd varrgrant
 cp Varrgrant-sample.json Varrgrant.json
 vagrant plugin install bindler
 vagrant bindler setup
