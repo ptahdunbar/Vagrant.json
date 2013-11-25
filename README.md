@@ -4,11 +4,13 @@
 
 ## Requirements
 * Latest version vagrant; [http://vagrantup.com](http://www.vagrantup.com/)
+* [VirtualBox](https://www.virtualbox.org/) or [VMWare Fusion](http://www.vmware.com/products/fusion/) or an [AWS account](http://aws.amazon.com/).
 
 # Installation
 
 ```
-git clone git://github.com/ptahdunbar/varrgrant.git varrgrant; cd varrgrant
+git clone git://github.com/ptahdunbar/varrgrant.git varrgrant;
+cd varrgrant
 cp Varrgrant-sample.json Varrgrant.json
 vagrant plugin install bindler
 vagrant bindler setup
