@@ -3,8 +3,9 @@
 > Bootstrap your application stack and maintain Dev/prod parity.
 
 ## Requirements
-* Latest version vagrant; [http://vagrantup.com](http://www.vagrantup.com/)
 * [VirtualBox](https://www.virtualbox.org/) or [VMWare Fusion](http://www.vmware.com/products/fusion/) or an [AWS account](http://aws.amazon.com/).
+* Latest version [Vagrant](http://www.vagrantup.com/).
+* Optionally [Berkshelf](http://berkshelf.com) for cookbook development.
 
 # Installation
 
@@ -15,6 +16,7 @@ cp Varrgrant-sample.json Varrgrant.json
 vagrant plugin install bindler
 vagrant bindler setup
 vagrant plugin bundle
+vagrant up
 ```
 
 # Usage
