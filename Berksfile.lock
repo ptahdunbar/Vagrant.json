@@ -48,20 +48,25 @@
       "git": "git://github.com/L2G/timezone-ii.git",
       "ref": "97ff6559a1d87b8db9b536bfc32195245aadcda7"
     },
+    "wp": {
+      "locked_version": "0.1.0",
+      "git": "git://github.com/ptahdunbar/wp-cookbook.git",
+      "ref": "8a0d54ae3b655d43d6a4b85a6036648c8fc8d3bb"
+    },
+    "php": {
+      "locked_version": "0.1.0",
+      "git": "git://github.com/ptahdunbar/php-cookbook.git",
+      "ref": "66e8fcfba8c377afc6ecfe6745992bd0588be8c9"
+    },
     "base": {
       "locked_version": "1.0.0",
       "git": "git://github.com/ptahdunbar/base-cookbook.git",
-      "ref": "c07aae1145e584b7ed54045cca9d7f5f8da9265f"
+      "ref": "6ebb3e6f55bfc8c7f3a12ee61c99ed95675dbbcb"
     },
     "database_server": {
       "locked_version": "0.1.0",
       "git": "git://github.com/ptahdunbar/database_server-cookbook.git",
       "ref": "f5e8250e0dfe4ba7c9a63a06404c7ff7b9452b42"
-    },
-    "php": {
-      "locked_version": "0.1.0",
-      "git": "git://github.com/ptahdunbar/php-cookbook.git",
-      "ref": "06863115c29f0a714db40b72ff51194c857d9c5e"
     },
     "web_server": {
       "locked_version": "0.1.0",
