@@ -131,6 +131,7 @@ By default, Varrgrant comes bundled with the following cookbooks:
 * [php](https://github.com/ptahdunbar/php-cookbook)
 * [web_server](https://github.com/ptahdunbar/web_server-cookbook)
 * [database_server](https://github.com/ptahdunbar/database_server-cookbook)
+* [wp](https://github.com/ptahdunbar/wp-cookbook)
 
 
 ## Vagrant plugins
