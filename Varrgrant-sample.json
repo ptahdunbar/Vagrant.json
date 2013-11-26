@@ -1,9 +1,7 @@
 [
 	{
-		"hostname": [
-			"varrgrant", "varrgrant.dev"
-		],
-		"ips": [
+		"hostname": "varrgrant.dev",
+		"ip": [
 			"10.10.10.100"
 		],
 		"chef" : {
