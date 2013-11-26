@@ -1,6 +1,6 @@
 # Vote Varrgrant for Vagrant!
 
-> Bootstrap your application stack and maintain Dev/prod parity. Inspired by [the 12factor app](http://12factor.net/) and sheer pain of doing sysadmin work.
+> Bootstrap your application stack and maintain development/production parity. Inspired by [the 12factor app](http://12factor.net/) and the sheer pain of doing sysadmin work, ugh.
 
 ## Requirements
 * [VirtualBox](https://www.virtualbox.org/) or [VMWare Fusion](http://www.vmware.com/products/fusion/) or an [AWS account](http://aws.amazon.com/).
@@ -201,29 +201,39 @@ Varrgrant definitions closely resemble vagrant's configuration directives you wo
 
 #### Hostname
 
-* `hostname` - Configure one or more hostnames for the machine. The first one is always the primary, and all hostnames get added to your `/etc/hosts` file upon a successful `vagrant up` or `vagrant reload`. This is the only required defintion needed to spin up an new instance.
+* `hostname` - Configure one or more hostnames for the machine. The first one is always the primary. Additional hostnames get added to your `/etc/hosts` file upon a successful `vagrant up` or `vagrant reload`. This is the only required defintion needed to spin up an new instance.
 
-Examples:
+Example using one hostname:
 
 ```
 [
 	{
-		"hostname": [
-			"varrgrant.dev", "site.dev"
-		]
+		"hostname": "varrgrant.dev"
 	}
 ]
 ``` 
+
+Example using two hostnames:
+
+```
+[
+	{
+		"hostname": ["varrgrant.dev", "example.dev"]
+	}
+]
+``` 
+
+
 #### IP Addresses
-* `ips` - Configure one or more IP addresses for this machine. Each IP address is mapped to the above hostnames and added to your `/etc/hosts` file.
+* `ip` - Configure one or more IP addresses for this machine. Each IP address is mapped to the above hostnames and added to your `/etc/hosts` file.
 
 Example with one IP address:
 
 ```
 [
 	{
-		"hostname": ["varrgrant.dev"],
-		"ips": ["10.10.10.100"]
+		"hostname": "varrgrant.dev",
+		"ip": "10.10.10.100"
 	}
 ]
 ```
@@ -234,7 +244,7 @@ Example with multiple IP addresses:
 [
 	{
 		"hostname": ["varrgrant.dev"],
-		"ips": [
+		"ip": [
 			"10.10.10.100",
 			"10.10.10.500"
 		]
@@ -267,8 +277,8 @@ Example syncing the root directory to `/srv/www/example.vm` in the guest machine
 	* `host` - A relative or absolute path on the host machine
 	* `guest` - An absolute path on the guest machine.
 	* `mount_options` - Folder Permissions
-	    * `dmode` - Unix folder permissions (775) for directories
-	    * `fmode` - Unix folder permissions (664) for files
+	    * `dmode` - Unix permissions (775) for directories
+	    * `fmode` - Unix permissions (664) for files
 	* `user` - User name on the guest machine to assign permissions too.
 	* `group` - Group name on the guest machine to assign permissions too.
 	* `disable` - boolean value to disable synced folders for this group. Usually combined with `id`.
@@ -311,13 +321,34 @@ Example synced_folder setup disabling the default `/vagrant` that gets synced:
 	}
 ]
 ```
+
+Example syncing multiple folders:
+
+```
+[
+	{
+		"hostname": "varrgrant.dev",
+		"synced_folders" : [
+			{
+				"host" : "./public",
+				"guest" : "/srv/www/example.vm"
+			},
+			{
+				"host" : "./logs",
+				"guest" : "/var/logs/webserver"
+			}
+		]
+	}
+]
+```
+
 #### Customize
 * `customize` - Reconfigure default settings for the virtual machine
 	* `memory` - Set the memory allocated to this machine. Defaults to `512`.
 	* `cpu` - Configure the amount of processors the machine needs. Defaults to `1`.
 	* `gui` - Boolean value to control enable/disable a GUI window, supported by VirtualBox and VMWare. Defaults to `false`.
 
-Example changing the default memory to 1GiB.
+Example changing the default memory to 1GiB. Note that this increases the amount of space it takes up on your host system.
 
 ```
 [
@@ -444,14 +475,13 @@ Example of a basic configuration of a ubuntu 12.04 LTS instance using the AWS pr
 
 Finally, you can specify chef configuration details such as recipes and custom attributes.
 
-
 Example of booting up an instance with base cookbook (installs tools such as git, vim, subversion, sets the timezone and a whole lot more):
 
 ```
 [
 	{
 		"hostname": ["varrgrant.dev"],
-		"ips": ["10.10.10.100"],
+		"ip": ["10.10.10.100"],
 		"chef" : {
 			"recipes" : [
 				"base"
@@ -467,7 +497,7 @@ Example of booting up a MySQL database server:
 [
 	{
 		"hostname": ["varrgrant.dev"],
-		"ips": ["10.10.10.200"],
+		"ip": ["10.10.10.200"],
 		"chef" : {
 			"recipes" : [
 				"base",
@@ -484,7 +514,7 @@ Example of booting up an nginx web server:
 [
 	{
 		"hostname": ["varrgrant.dev"],
-		"ips": ["10.10.10.200"],
+		"ip": ["10.10.10.200"],
 		"chef" : {
 			"recipes" : [
 				"base",
@@ -505,7 +535,7 @@ Example of booting up:
 [
 	{
 		"hostname": [ "app" ],
-		"ips": ["10.10.10.100"],
+		"ip": ["10.10.10.100"],
 		"chef" : {
 			"recipes" : [
 				"base",
@@ -516,7 +546,7 @@ Example of booting up:
 	},
 	{
 		"hostname": [ "db" ],
-		"ips": ["10.10.10.200"],
+		"ip": ["10.10.10.200"],
 		"chef" : {
 			"recipes" : [
 				"base",
@@ -540,7 +570,7 @@ Example of booting up:
 [
 	{
 		"hostname": [ "app" ],
-		"ips": ["10.10.10.100"],
+		"ip": ["10.10.10.100"],
 		"chef" : {
 			"recipes" : [
 				"base",
@@ -556,7 +586,7 @@ Example of booting up:
 	},
 	{
 		"hostname": [ "db" ],
-		"ips": ["10.10.10.200"],
+		"ip": ["10.10.10.200"],
 		"chef" : {
 			"recipes" : [
 				"base",
@@ -590,7 +620,7 @@ Example machine running:
 			"varrgrant.dev",
 			"example.dev"
 		],
-		"ips": ["10.10.10.800"],
+		"ip": ["10.10.10.800"],
 
 		"customize": {
 			"memory": 1024,
