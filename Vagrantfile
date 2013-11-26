@@ -57,18 +57,18 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
             config.vm.hostname = hostname
 
-            if box["ips"]
-            	if box["ips"].kind_of? String
-					config.vm.network "private_network", ip: box["ips"]
+            if box["ip"]
+            	if box["ip"].kind_of? String
+					config.vm.network "private_network", ip: box["ip"]
 				else
-					box["ips"].each do |ipaddress|
+					box["ip"].each do |ipaddress|
 						config.vm.network "private_network", ip: ipaddress
 					end
 				end
 			end
 
-			if box["forward_port"]
-				box["forward_port"].each do |port|
+			if box["port_fowarding"]
+				box["port_fowarding"].each do |port|
 					config.vm.network "forwarded_port", guest: port["guest"], host: port["host"]
 				end
 			end
@@ -91,12 +91,12 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 				end
 			end
 
-            if defined? VagrantPlugins::HostsUpdater and box["hostname"] and box["ips"]
+            if defined? VagrantPlugins::HostsUpdater and box["hostname"] and box["ip"]
             	# plugin - hostsupdater
             	puts "[Info] vagrant-hostsupdater enabled."
             	# temp until I get host entries to be unique.
             	box["hostname"].shift
-                config.hostsupdater.aliases = box["hostname"]
+                config.hostsupdater.aliases = box["hostname"] if box["hostname"]
             end
 
             if box["customize"]
