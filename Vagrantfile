@@ -71,7 +71,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 				# plugin - hostsupdater
 				puts "[info] vagrant-hostsupdater enabled."
 				# temp until I get host entries to be unique.
-				box["hostname"].shift
+				box["hostname"].shift if box["hostname"].kind_of?(Array)
 				config.hostsupdater.aliases = box["hostname"]
 			end
 
