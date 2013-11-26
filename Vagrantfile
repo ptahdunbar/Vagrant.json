@@ -72,7 +72,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 				puts "[info] vagrant-hostsupdater enabled."
 				# temp until I get host entries to be unique.
 				box["hostname"].shift if box["hostname"].kind_of?(Array)
-				config.hostsupdater.aliases = box["hostname"]
+
+				config.hostsupdater.aliases = box["hostname"] if box["hostname"].kind_of?(Array)
 			end
 
 			if box["port_fowarding"]
