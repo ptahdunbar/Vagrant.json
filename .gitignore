@@ -1,6 +1,6 @@
-.vagrant
-.idea
-nbproject
+.vagrant/
+.idea/
+nbproject/
 cookbooks/
 vendor/cookbooks/
 Varrgrant.json
