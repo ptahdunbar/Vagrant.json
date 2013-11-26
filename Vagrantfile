@@ -41,7 +41,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
 		if defined? VagrantPlugins::Cachier
 			# plugin: vagrant-cachier
-			puts "[Info] vagrant-cachier enabled."
+			puts "[info] vagrant-cachier enabled."
 			box_config.cache.scope = :machine
         end
     end
@@ -67,6 +67,14 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 				end
 			end
 
+			if defined? VagrantPlugins::HostsUpdater and box["hostname"] and box["ip"]
+				# plugin - hostsupdater
+				puts "[info] vagrant-hostsupdater enabled."
+				# temp until I get host entries to be unique.
+				box["hostname"].shift
+				config.hostsupdater.aliases = box["hostname"]
+			end
+
 			if box["port_fowarding"]
 				box["port_fowarding"].each do |port|
 					config.vm.network "forwarded_port", guest: port["guest"], host: port["host"]
@@ -79,25 +87,12 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
 					folder_args = Hash[params.map{ |key, value| next if ( !params.include? 'host' or !params.include? 'guest' ); [key.to_sym, value] }]
 
-					# A little hackish, but simplicity is key.
-					# Removes extra step for fixing permission issues for web_server.
-					folder_args["group"] = 'www-data' if ! folder_args["group"]
-					folder_args["mount_options"] = ["dmode=775","fmode=664"] if ! folder_args["mount_options"]
-
 					# Make the directory if it doesnt exists
 					FileUtils.mkdir_p(params["host"]) unless File.exists?(params["host"])
 
 					config.vm.synced_folder params["host"], params["guest"], folder_args
 				end
 			end
-
-            if defined? VagrantPlugins::HostsUpdater and box["hostname"] and box["ip"]
-            	# plugin - hostsupdater
-            	puts "[Info] vagrant-hostsupdater enabled."
-            	# temp until I get host entries to be unique.
-            	box["hostname"].shift
-                config.hostsupdater.aliases = box["hostname"] if box["hostname"]
-            end
 
             if box["customize"]
                 config.vm.provider "virtualbox" do |node|
@@ -138,11 +133,11 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
             if box["chef"] and defined? VagrantPlugins::Omnibus
                 # plugin: vagrant-omnibus
-                puts "[Info] vagrant-ominbus enabled."
+                puts "[info] vagrant-ominbus enabled."
                 config.omnibus.chef_version = :latest
 
 				# plugin: vagrant-berkshelf
-                puts "[Info] vagrant-berkshelf enabled."
+                puts "[info] vagrant-berkshelf enabled."
                 config.berkshelf.enabled = true
 
                 config.vm.provision :chef_solo do |chef|
