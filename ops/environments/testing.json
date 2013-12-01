@@ -1,0 +1,10 @@
+{
+	"name": "testing",
+	"chef_type": "environment",
+	"json_class": "Chef::Environment",
+	"description": "",
+	"default_attributes": {
+	},
+	"cookbook_versions": {
+	}
+}

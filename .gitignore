@@ -1,6 +1,4 @@
 .vagrant/
 .idea/
 nbproject/
-cookbooks/
-vendor/cookbooks/
 Varrgrant.json

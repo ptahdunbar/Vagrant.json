@@ -4,13 +4,16 @@
 require 'rubygems'
 require 'json'
 
+boxfile = "Varrgrant.json"
+
 # Can't run vagrant without Vagrantfile.json
-unless File.exists?("Varrgrant.json") then
-    raise "Please create a Varrgrant.json configuration file to configure your vagrant environment."
+unless File.exists?(boxfile) then
+	FileUtils.copy_file("Varrgrant-sample.json", boxfile)
+    puts "[success] Copied Varrgrant-sample.json to Varrgrant.json."
+    puts "[info] Configure your vagrant environment by adding Varrgrant definitions to Varrgrant.json."
     exit
 end
 
-boxfile = "Varrgrant.json"
 boxes = JSON.parse(File.read(boxfile));
 
 puts "[info] Loading box configuration from #{boxfile}"
@@ -41,7 +44,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
 		if defined? VagrantPlugins::Cachier
 			# plugin: vagrant-cachier
-			puts "[info] vagrant-cachier enabled."
+			puts "[info] Enabled: vagrant-cachier"
 			box_config.cache.scope = :machine
         end
     end
@@ -69,7 +72,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
 			if defined? VagrantPlugins::HostsUpdater and box["hostname"] and box["ip"]
 				# plugin - hostsupdater
-				puts "[info] vagrant-hostsupdater enabled."
+				puts "[info] Enabled: vagrant-hostsupdater"
 				# temp until I get host entries to be unique.
 				box["hostname"].shift if box["hostname"].kind_of?(Array)
 
@@ -134,14 +137,22 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
             if box["chef"] and defined? VagrantPlugins::Omnibus
                 # plugin: vagrant-omnibus
-                puts "[info] vagrant-ominbus enabled."
+                puts "[info] Enabled: vagrant-ominbus"
                 config.omnibus.chef_version = :latest
 
 				# plugin: vagrant-berkshelf
-                puts "[info] vagrant-berkshelf enabled."
+                puts "[info] Enabled: vagrant-berkshelf"
                 config.berkshelf.enabled = true
 
                 config.vm.provision :chef_solo do |chef|
+                	# Uncomment the line below to enable verbose chef output
+                	#chef.log_level = :debug
+
+                	chef.roles_path = "vendor/roles"
+					chef.environments_path = "vendor/environments"
+
+					chef.environment = box["chef"]["environment"] if box["chef"]["environment"]
+
                     if box["chef"]["recipes"]
                         if box["chef"]["recipes"].kind_of? String
                             chef.add_recipe "recipe[#{box["chef"]["recipe"]}]"
@@ -151,6 +162,16 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
                             end
                         end
                     end
+
+                    if box["chef"]["roles"]
+						if box["chef"]["roles"].kind_of? String
+							chef.add_role box["chef"]["roles"]
+						else
+							box["chef"]["roles"].each do |role|
+								chef.add_role role
+							end
+						end
+					end
 
 					# Register custom chef attributes
 					chef.json = box["chef"]["json"] if box["chef"]["json"]

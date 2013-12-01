@@ -129,8 +129,8 @@ By default, Varrgrant comes bundled with the following cookbooks:
 * [timezone-ii](https://github.com/L2G/timezone-ii)
 * [base](https://github.com/ptahdunbar/base-cookbook)
 * [php](https://github.com/ptahdunbar/php-cookbook)
-* [web_server](https://github.com/ptahdunbar/web_server-cookbook)
-* [database_server](https://github.com/ptahdunbar/database_server-cookbook)
+* [web](https://github.com/ptahdunbar/web-cookbook)
+* [db](https://github.com/ptahdunbar/db-cookbook)
 * [wp](https://github.com/ptahdunbar/wp-cookbook)
 
 
@@ -502,7 +502,7 @@ Example of booting up a MySQL database server:
 		"chef" : {
 			"recipes" : [
 				"base",
-				"database_server"
+				"db"
 			]
 		}
 	}
@@ -519,7 +519,7 @@ Example of booting up an nginx web server:
 		"chef" : {
 			"recipes" : [
 				"base",
-				"web_server"
+				"web"
 			]
 		}
 	}
@@ -540,7 +540,7 @@ Example of booting up:
 		"chef" : {
 			"recipes" : [
 				"base",
-				"web_server",
+				"web",
 				"php"
 			]
 		}
@@ -551,7 +551,7 @@ Example of booting up:
 		"chef" : {
 			"recipes" : [
 				"base",
-				"database_server"
+				"db"
 			]
 		}
 	}
@@ -575,11 +575,11 @@ Example of booting up:
 		"chef" : {
 			"recipes" : [
 				"base",
-				"web_server",
+				"web",
 				"php"
 			],
 			"json" : {
-				"web_server" : {
+				"web" : {
 					"platform" : "apache2"
 				}
 			}
@@ -591,10 +591,10 @@ Example of booting up:
 		"chef" : {
 			"recipes" : [
 				"base",
-				"database_server"
+				"db"
 			],
 			"json" : {
-				"database_server" : {
+				"db" : {
 					"databases" : ["wordpress"],
 					"users" : ["wordpress"]
 				}
@@ -644,17 +644,17 @@ Example machine running:
 		"chef": {
 			"recipes": [
 				"base",
-				"database_server",
-				"web_server",
+				"db",
+				"web",
 				"php",
 				"wp"
 			],
 			"json" : {
-				"database_server" : {
+				"db" : {
 					"databases": ["example_wp"],
 					"users" : ["example_user"]
 				},
-				"web_server" : {
+				"web" : {
 					"vhosts": ["example.dev"]
 				},
 				"php" : {
