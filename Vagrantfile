@@ -148,8 +148,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
                 	# Uncomment the line below to enable verbose chef output
                 	#chef.log_level = :debug
 
-                	chef.roles_path = "vendor/roles"
-					chef.environments_path = "vendor/environments"
+                	chef.roles_path = "ops/roles"
+					chef.environments_path = "ops/environments"
 
 					chef.environment = box["chef"]["environment"] if box["chef"]["environment"]
 
