@@ -2,7 +2,7 @@
 	"name": "production",
 	"chef_type": "environment",
 	"json_class": "Chef::Environment",
-	"description": "",
+	"description": "Live production environment.",
 	"default_attributes": {
 	},
 	"cookbook_versions": {
