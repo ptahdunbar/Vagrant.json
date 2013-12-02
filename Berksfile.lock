@@ -108,12 +108,12 @@
     "base": {
       "locked_version": "0.2.0",
       "git": "git://github.com/ptahdunbar/base-cookbook.git",
-      "ref": "203876e8a95934d509233d6a7e332d9d30223301"
+      "ref": "0fbbad0720ebe07fbf854e5079f39dfa654955fb"
     },
     "users": {
       "locked_version": "0.1.0",
       "git": "git://github.com/ptahdunbar/users-cookbook.git",
-      "ref": "2dd8cbacd2ff2ffe3d36f4e4a2e92edc47771d6a"
+      "ref": "f9f971ca4e88d2168dbedb86556273c449fdb3f3"
     },
     "web": {
       "locked_version": "0.1.0",
