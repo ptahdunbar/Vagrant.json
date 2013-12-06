@@ -38,7 +38,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
                 box_config.vm.box_url = "https://github.com/mitchellh/vagrant-aws/raw/master/dummy.box"
             when 'rackspace'
                 box_config.vm.box_url = "https://github.com/mitchellh/vagrant-rackspace/raw/master/dummy.box"
-
             else
                 box_config.vm.box_url = "http://cloud-images.ubuntu.com/vagrant/precise/current/precise-server-cloudimg-amd64-vagrant-disk1.box"
         end
@@ -153,24 +152,24 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
                 if box["ami"]
                     # I'd like to use environment variables for these,
                     # but cant seem to get it working for the life of me. grrr!
-                    aws.access_key_id 				= box["ami"]["access_key_id"]
-                    aws.secret_access_key 			= box["ami"]["secret_access_key"]
-                    aws.keypair_name 				= box["ami"]["keypair_name"]
-                    override.ssh.private_key_path 	= box["ami"]["private_key_path"]
-                    override.ssh.username 			= box["ami"]["username"]
+                    aws.access_key_id = box["ami"]["access_key_id"]
+                    aws.secret_access_key = box["ami"]["secret_access_key"]
+                    aws.keypair_name = box["ami"]["keypair_name"]
+                    override.ssh.private_key_path = box["ami"]["private_key_path"]
+                    override.ssh.username = box["ami"]["username"]
 
-                    aws.ami 						= box["ami"]["id"] if box["ami"]["id"]
-                    aws.availability_zone			= box["ami"]["availability_zone"] if box["ami"]["availability_zone"]
-                    aws.region						= box["ami"]["region"] if box["ami"]["region"]
-                    aws.instance_type				= box["ami"]["instance_type"] if box["ami"]["instance_type"]
-                    #aws.security_groups			= box["ami"]["security_groups"] if box["ami"]["security_groups"]
-                    aws.iam_instance_profile_arn 	= box["ami"]["iam_instance_profile_arn"] if box["ami"]["iam_instance_profile_arn"]
-                    aws.iam_instance_profile_name 	= box["ami"]["iam_instance_profile_name"] if box["ami"]["iam_instance_profile_name"]
-                    aws.use_iam_profile 			= box["ami"]["use_iam_profile"] if box["ami"]["use_iam_profile"]
-                    aws.private_ip_address			= box["ami"]["private_ip_address"] if box["ami"]["private_ip_address"]
-                    aws.subnet_id					= box["ami"]["subnet_id"] if box["ami"]["subnet_id"]
-                    aws.tags						= box["ami"]["tags"] if box["ami"]["tags"]
-                    aws.user_data					= box["ami"]["user_data"] if box["ami"]["user_data"]
+                    aws.ami = box["ami"]["id"] if box["ami"]["id"]
+                    aws.availability_zone = box["ami"]["availability_zone"] if box["ami"]["availability_zone"]
+                    aws.region = box["ami"]["region"] if box["ami"]["region"]
+                    aws.instance_type = box["ami"]["instance_type"] if box["ami"]["instance_type"]
+                    aws.security_groups = box["ami"]["security_groups"] if box["ami"]["security_groups"]
+                    aws.iam_instance_profile_arn = box["ami"]["iam_instance_profile_arn"] if box["ami"]["iam_instance_profile_arn"]
+                    aws.iam_instance_profile_name = box["ami"]["iam_instance_profile_name"] if box["ami"]["iam_instance_profile_name"]
+                    aws.use_iam_profile = box["ami"]["use_iam_profile"] if box["ami"]["use_iam_profile"]
+                    aws.private_ip_address = box["ami"]["private_ip_address"] if box["ami"]["private_ip_address"]
+                    aws.subnet_id = box["ami"]["subnet_id"] if box["ami"]["subnet_id"]
+                    aws.tags = box["ami"]["tags"] if box["ami"]["tags"]
+                    aws.user_data = box["ami"]["user_data"] if box["ami"]["user_data"]
                 end
             end
 
