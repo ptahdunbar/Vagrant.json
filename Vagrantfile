@@ -155,7 +155,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
                     if box["chef"]["recipes"]
                         if box["chef"]["recipes"].kind_of? String
-                            chef.add_recipe "recipe[#{box["chef"]["recipe"]}]"
+                            chef.add_recipe "recipe[#{box["chef"]["recipes"]}]"
                         else
                             box["chef"]["recipes"].each do |recipe|
                                 chef.add_recipe "recipe[#{recipe}]"
