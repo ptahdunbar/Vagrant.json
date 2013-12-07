@@ -11,6 +11,6 @@
 	},
 	"run_list": [
 		"recipe[db]",
-		"recipe[db::mariadb]"
+		"recipe[db::mysql]"
 	]
 }
