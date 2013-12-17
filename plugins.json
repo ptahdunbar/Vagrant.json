@@ -1,10 +1,11 @@
 [
-	"vagrant-aws",
+    "vagrant-aws",
     "vagrant-exec",
     "vagrant-omnibus",
     "vagrant-cachier",
     "vagrant-pristine",
-	"vagrant-hostsupdater",
-	"vagrant-vmware-fusion",
-	"vagrant-berkshelf"
+    "vagrant-rackspace",
+    "vagrant-hostsupdater",
+    "vagrant-vmware-fusion",
+    "vagrant-berkshelf"
 ]

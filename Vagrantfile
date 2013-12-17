@@ -5,12 +5,13 @@ require 'rubygems'
 require 'json'
 
 boxfile = "Varrgrant.json"
+sampleboxfile = "Varrgrant-sample.json"
 
 # Can't run vagrant without Vagrantfile.json
 unless File.exists?(boxfile) then
-    FileUtils.copy_file("Varrgrant-sample.json", boxfile)
-    puts "[success] Copied Varrgrant-sample.json to Varrgrant.json."
-    puts "[info] Configure your vagrant environment by adding Varrgrant definitions to Varrgrant.json."
+    FileUtils.copy_file(sampleboxfile, boxfile)
+    puts "[success] Copied #{sampleboxfile} to #{boxfile}."
+    puts "[info] Configure your vagrant environment by adding Varrgrant definitions to #{boxfile}."
     exit
 end
 
@@ -21,7 +22,7 @@ puts "[info] Loading box configuration from #{boxfile}"
 # Vagrantfile API version.
 VAGRANTFILE_API_VERSION = "2"
 
-# provider: vmware_fusion, aws, virtualbox
+# provider: vmware_fusion, aws, rackspace, virtualbox
 case "#{ARGV[1]}"; when '--provider=aws'; provider = 'aws'; when '--provider=vmware_fusion'; provider = 'vmware_fusion'; else; provider = 'virtualbox'; end if ARGV[1]
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
@@ -64,7 +65,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
             box_config.vbguest.auto_update = false
 
             # do NOT download the iso file from a webserver
-            box_config.vbguest.no_remote = true
+            box_config.vbguest.no_remote = false
         end
     end
 

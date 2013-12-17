@@ -1,6 +1,6 @@
 site :opscode
 
-cookbook 'mysql', github: 'opscode-cookbooks/mysql'
+# opscode
 cookbook 'database', github: 'opscode-cookbooks/database'
 cookbook 'logwatch', github: 'opscode-cookbooks/logwatch'
 cookbook 'logrotate', github: 'opscode-cookbooks/logrotate'
@@ -16,9 +16,7 @@ cookbook 'sudo', github: 'opscode-cookbooks/sudo'
 cookbook 'mongodb', github: 'edelight/chef-mongodb'
 cookbook 'aws', github: 'opscode-cookbooks/aws'
 
-cookbook 'redisio', github: 'brianbianco/redisio'
-cookbook 'timezone-ii', github: 'L2G/timezone-ii'
-
+# vendor
 cookbook 'nodejs', github: 'ptahdunbar/nodejs-cookbook'
 cookbook 'npm', github: 'ptahdunbar/npm-cookbook'
 cookbook 'wp', github: 'ptahdunbar/wp-cookbook'
@@ -26,6 +24,10 @@ cookbook 'php', github: 'ptahdunbar/php-cookbook'
 cookbook 'base', github: 'ptahdunbar/base-cookbook'
 cookbook 'users', github: 'ptahdunbar/users-cookbook'
 cookbook 'web', github: 'ptahdunbar/web-cookbook'
-cookbook 'db', github: 'ptahdunbar/db-cookbook'
 cookbook 'nginx', github: 'ptahdunbar/nginx'
-cookbook 'mariadb', github: 'ptahdunbar/mariadb-cookbook'
+cookbook 'mysql', '~> 4.0.7', github: 'ptahdunbar/mysql-cookbook'
+cookbook 'db', '~> 0.0.9', github: 'ptahdunbar/db-cookbook'
+cookbook 'mariadb', '~> 0.0.9', github: 'ptahdunbar/mariadb-cookbook'
+cookbook 'redisio', github: 'brianbianco/redisio'
+cookbook 'timezone-ii', github: 'L2G/timezone-ii'
+cookbook 'phpmyadmin', '~> 1.0', :github => 'priestjim/chef-phpmyadmin', :ref => '1.0.6'

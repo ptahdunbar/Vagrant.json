@@ -1,16 +1,17 @@
 [
-	{
-		"hostname": "varrgrant.dev",
-		"ip": [
-			"10.10.10.100"
-		],
-		"chef" : {
-			"environment": "production",
-			"recipes": [
-				"base"
-			],
-			"json" : {
-			}
-		}
-	}
+    {
+        "hostname": "varrgrant.dev",
+        "ip": "10.10.10.100",
+
+        "chef" : {
+            "environment": "production",
+            "recipes": [
+                "base"
+            ],
+            "roles" : [
+            ],
+            "json" : {
+            }
+        }
+    }
 ]

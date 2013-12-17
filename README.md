@@ -380,6 +380,41 @@ Example changing the cpus and enabling a GUI.
 ]
 ```
 
+#### SSH Configuration
+
+These should all be self-explainatory.
+
+* `config` Container for SSH parameters
+    * `ssh_username` (string)
+    * `ssh_host` (string)
+    * `ssh_port` (integer)
+    * `ssh_private_key_path` (string)
+    * `forward_agent`(boolean)
+    * `forward_x11` (boolean)
+    * `shell` (string)
+
+Example configuring basic ssh parameters:
+
+```
+[
+	{
+		"hostname" : "varrgrant.dev",
+
+		"config" : {
+			"ssh_username" : "vagrant",
+			//"ssh_host" : "",
+			"ssh_port" : 22,
+			"ssh_private_key_path" : "/path/to/private.key",
+			"forward_agent" : true,
+			"forward_x11" : true,
+			"shell" : "bash -l"
+		}
+	}
+]
+```
+
+
+
 #### Port Fowarding
 
 Example port forwarding:
@@ -467,6 +502,52 @@ Example of a basic configuration of a ubuntu 12.04 LTS instance using the AWS pr
 			"keypair_name" : "aws-keypairname",
 			"private_key_path" : "~/.ssh/aws-keypairname.pem",
 			"username" : "ubuntu"
+		}
+	}
+]
+```
+
+#### Rackspace
+
+Varrgrant supports the [Rackspace provider](https://github.com/mitchellh/vagrant-rackspace). Once you fill out the relevant details, simply run:
+
+```
+vagrant up --provder=rackspace
+```
+
+* `rackspace` - Container for Rackspace parameters
+    * `api_key` - The API key for accessing Rackspace.
+    * `flavor` - The server flavor to boot. This can be a string matching
+  the exact ID or name of the server, or this can be a regular expression
+  to partially match some server flavor.
+    * `image` - The server image to boot. This can be a string matching the
+  exact ID or name of the image, or this can be a regular expression to
+  partially match some image.
+    * `rackspace_region` - The region to hit. By default this is :dfw. Valid options are:
+:dfw, :ord, :lon, :iad, :syd.  Users should preference using this setting over `rackspace_compute_url` setting.
+    * `rackspace_compute_url` - The compute_url to hit. This is good for custom endpoints.
+    * `rackspace_auth_url` - The endpoint to authentication against. By default, vagrant will use the global
+rackspace authentication endpoint for all regions with the exception of :lon. IF :lon region is specified
+vagrant will authenticate against the UK authentication endpoint.
+    * `public_key_path` - The path to a public key to initialize with the remote
+  server. This should be the matching pair for the private key configured
+  with `config.ssh.private_key_path` on Vagrant.
+    * `server_name` - The name of the server within RackSpace Cloud. This
+  defaults to the name of the Vagrant machine (via `config.vm.define`), but
+  can be overridden with this.
+    * `username` - The username with which to access Rackspace.
+    * `disk_config` - Disk Configuration  'AUTO' or 'MANUAL'
+
+Example of a basic configuration of a ubuntu 12.04 LTS instance using the Rackspace provider:
+
+```
+[
+	{
+		"hostname" : "varrgrant.dev",
+		"rackspace" : {
+			"username" : "username",
+			"api_key" : "user-account-api-key",
+			"image" : "80fbcb55-b206-41f9-9bc2-2dd7aac6c061"
 		}
 	}
 ]
