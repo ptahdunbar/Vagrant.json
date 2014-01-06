@@ -355,11 +355,9 @@ Example changing the default memory to 1GiB. Note that this increases the amount
 [
 	{
 		"hostname": ["varrgrant.dev"],
-		"customize" : [
-			{
-				"memory": 1024
-			}
-		]
+		"customize" : {
+			"memory": 1024
+		}
 	}
 ]
 ```
@@ -370,12 +368,10 @@ Example changing the cpus and enabling a GUI.
 [
 	{
 		"hostname": ["varrgrant.dev"],
-		"customize" : [
-			{
-				"cpus": 2,
-				"gui": true
-			}
-		]
+		"customize" : {
+			"cpus": 2,
+			"gui": true
+		}
 	}
 ]
 ```
