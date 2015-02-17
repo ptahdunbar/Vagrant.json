@@ -1,61 +1,40 @@
-# Vote Varrgrant for Vagrant!
+# DevOps
 
 > Bootstrap your application stack and maintain development/production parity. Inspired by [the 12factor app](http://12factor.net/) and the sheer pain of doing sysadmin work, ugh.
 
 ## Requirements
-* [VirtualBox](https://www.virtualbox.org/) or [VMWare Fusion](http://www.vmware.com/products/fusion/) or an [AWS account](http://aws.amazon.com/).
+* [VirtualBox](https://www.virtualbox.org/) or [AWS account](http://aws.amazon.com/) or [DigitalOcean account](http://digitalocean.com/).
 * Latest version [Vagrant](http://www.vagrantup.com/).
-* Optionally [Berkshelf](http://berkshelf.com) for chef cookbook development.
 
 # Installation
 
 ```
-git clone git://github.com/ptahdunbar/Varrgrant.git Varrgrant;
-cd Varrgrant
-cp Varrgrant-sample.json Varrgrant.json
-vagrant plugin install bindler
-vagrant bindler setup
-vagrant plugin bundle
-vagrant up
+git clone git://github.com/ptahdunbar/DevOps.git new-project
+cd new-project
+./setup.sh
 ```
-
-#### Wait, what just happened?!
-
-* We downloaded the github repository and changed into it's directory.
-* We then copied the sample Varrgrant-sample.json file to Varrgrant.json which will contain our stack definitions.
-* Finally, we've initialized the vagrant environment, downloading all plugins and booted the machine(s).
-
-# Welcome to Varrgrant for Vagrant
-Upon running `vagrant up`, You now have a bare-bones Ubuntu LTS 12.04 installed and running!
-
-The next step is to make the system useful by installing everything we need to run our application stack (multiple web servers, databases, cache servers, the entire stack). 
-
-The first time takes *a while* (depening on your internet connection) as it has to perform a one-time download of the operating system and installing the vagrant-berkshelf plugin hangs, but keep trying a few times!
-
-Once downloaded, it's saved to your computer and usable everywhere.
 
 # Usage
 
-* Configure the machine(s) needed (See the Varrgrant definitions section below).
+* Configure the node(s) needed (See the definitions section below).
     * `vim Varrgrant.json`
-* To launch the machine(s), run:
+* Launch the node(s):
     * `vagrant up`
-* To ssh into the machine(s), run:
+* SSH into the node(s):
     * `vagrant ssh` (if its just one machine)
-    * `vagrant ssh varrgrant.dev` (sepecify the first hostname of the machine)
-* To stop the machine(s), run:
+    * `vagrant ssh nodename` (use the "hostname" property)
+* Stop the node(s):
     * `vagrant halt`
-* To update the machine(s) with the latest changes (for chef development), run:
+* Update the node(s) with the latest changes:
     * `vagrant provision` (you should've already ran `vagrant up`)
-* To re-sync all synced folders and add new ones, run:
+* Re-sync all synced folders and networking:
     * `vargrant reload`
-* To destroy the machine(s) and delete everything, run:
-    * `vagrant destory`	
-* To launch the machine(s) again, run:
+* Destroy the node(s) and delete everything:
+    * `vagrant destory`
+* Launch the machine(s) again:
     * `vagrant up` (catching the flow? :)
-* To destroy and reboot the machine(s) in one-go, run:
+* Destroy and reboot the machine(s) in one-go:
     * `vagrant pristine`
-
 
 ## What is vagrant and why do we need it?
 
@@ -63,92 +42,29 @@ Once downloaded, it's saved to your computer and usable everywhere.
 
 **TL;DR** Vagrant is a command-line tool that enables us to have development/production environment nirvana.
 
-Here are my top 3 favorite reasons why I love vagrant:
+Top 3 reasons why I love vagrant:
 
 1. Like production.
     * If your production enviroment consist of multiple web servers and a separate db server, Vagrant can replicate that setup so you can simulate/debug/test code in an identical enviroment.
 2. Team friendly.
     * Work with colleagues who refuses to switch to mac (or your environment that has everything installed)? Vagrant ensures that everyone works in the same environment no matter what operating system they sport.
 3. Configuration management support
-    * We take advantage of [chef](https://opscode.com/chef) and [berkshelf](http://berkshelf.com/) to spin up nodes to a known state *in seconds*!
-
-
-## Provisioning with Chef & Berkshelf
-
-> See [Learnchef](https://learnchef.opscode.com/) for instructions and documentation.
-
-**TL; DR** Chef enables us to code templates for how our machine(s) (or servers) should be configured and essentially boot up brand-new instance(s) of it's configuration with everything installed and running in seconds!
-
-Here are my top 3 favorite reasons why I love chef:
-
-1. Always know the state of a machine when you ssh into it.
-2. Ease of maintainance and updates when working in a complex environment with multiple machine(s) running.
-3. Works with *any* deployment enviroment (AWS, VirtualBox, VMWare, and Vagrant).
-
-## Chef cookbook development with Berkshelf
-
-> See [Berkshelf](http://berkshelf.com/) for instructions and documentation.
-
-**TL; DR** Berkshelf makes developing chef cookbooks and reusing community cookbooks stupid easy and fun. Simply define cookbooks in the project's `Berksfile`.
-
-### The Berkshelf Way
-
-* [Learn what a cookbook is](https://learnchef.opscode.com/), and [the differences between various types of cookbooks](http://www.prashantrajan.com/posts/2013/06/leveling-up-chef-best-practices/) before pursuing chef development. Watch [The Berkshelf Way](http://www.youtube.com/watch?v=hYt0E84kYUI) for more info.
-
-##### Install Berkshelf
-* Install Berkshelf `sudo gem install berkshelf --no-rdoc --no-ri`
-
-### Chef cookbook development Workflow
-
-* To create a new cookbook, run:
-	* `berks cookbook foo` (you can optionally save cookbooks into a `vendor/cookbooks` directory which is .gitignored)
-* Update available cookbooks in `Berksfile`.
-	* `vim Berksfile`
-* To download all cookbooks specified in `Berksfile`, run:
-	* `berks install`
-* Update the cookbooks to their latest versions, run:
-	* `berks update`
-
-
-By default, Varrgrant comes bundled with the following cookbooks:
-
-### Bundled Cookbooks
-* [MySQL](https://github.com/opscode-cookbooks/mysql)
-* [database](https://github.com/opscode-cookbooks/database)
-* [logrotate](https://github.com/opscode-cookbooks/logrotate)
-* [apache2](https://github.com/opscode-cookbooks/apache2)
-* [nginx](https://github.com/opscode-cookbooks/nginx)
-* [postfix](https://github.com/opscode-cookbooks/postfix)
-* [xml](https://github.com/opscode-cookbooks/xml)
-* [git](https://github.com/opscode-cookbooks/git)
-* [subversion](https://github.com/opscode-cookbooks/subversion)
-* [vim](https://github.com/opscode-cookbooks/vim)
-* [sudo](https://github.com/opscode-cookbooks/sudo)
-* [nodejs](https://github.com/mdxp/nodejs-cookbook)
-* [redisio](https://github.com/brianbianco/redisio)
-* [timezone-ii](https://github.com/L2G/timezone-ii)
-* [base](https://github.com/ptahdunbar/base-cookbook)
-* [php](https://github.com/ptahdunbar/php-cookbook)
-* [web](https://github.com/ptahdunbar/web-cookbook)
-* [db](https://github.com/ptahdunbar/db-cookbook)
-* [wp](https://github.com/ptahdunbar/wp-cookbook)
-
+    * Easily use whatever provisioning tool for the project.
 
 ## Vagrant plugins
-To make your development workflow easier, Varrgrant comes bundled with the following [vagrant plugins](https://github.com/mitchellh/vagrant/wiki/Available-Vagrant-Plugins):
+To make your development workflow easier, devops comes bundled with the following [vagrant plugins](https://github.com/mitchellh/vagrant/wiki/Available-Vagrant-Plugins):
 
-* [vagrant-exec](https://github.com/p0deje/vagrant-exec) - Run one-liner commands into a machine, without ssh'ing into it.
 * [vagrant-cachier](https://github.com/fgrehm/vagrant-cachier) - Speeds up apt-get.
-* [vagrant-omnibus](https://github.com/schisamo/vagrant-omnibus) - Installs Chef client.
-* [vagrant-berkshelf](https://github.com/riotgames/vagrant-berkshelf) - Installs Berkshelf.
+* [vagrant-exec](https://github.com/p0deje/vagrant-exec) - Run one-liner commands into a machine, without ssh'ing into it.
 * [vagrant-pristine](https://github.com/fgrehm/vagrant-pristine) - Adds pristine command to vagrant.
+* [vagrant-dns](https://github.com/BerlinVagrant/vagrant-dns) - Updates your `/etc/hosts` file with machine IP addresses.
 * [vagrant-hostsupdater](https://github.com/cogitatio/vagrant-hostsupdater) - Updates your `/etc/hosts` file with machine IP addresses.
-* [vagrant-vmware-fusion](http://www.vagrantup.com/vmware) - If your runnning VMWare Fusion, which is much faster than virturalbox.
 * [vagrant-aws](https://github.com/mitchellh/vagrant-aws) - Test/deploy to your amazon AWS account.
+* [vagrant-digitalocean](https://github.com/smdahlen/vagrant-digitalocean) - Test/deploy to your Digital Ocean account.
+* [vagrant-managed-servers](https://github.com/tknerr/vagrant-managed-servers) - Test/deploy to any VPS server via SSH.
 
 ## What is Varrgrant.json?
-`Varrgrant.json` is the core of Varrgrant, which is really only syntactical vagrant sugar to simplify setting up multi-machine environments and provisioning. I wanted an clear and simple format of how my machines where configured without always having to mess with 	`Vagrantfile` which can get messing, and repetitive.
-
+`Varrgrant.json` is the core of Varrgrant, which is really just syntactical vagrant sugar to simplify setting up multi-machine environments and provisioning. I wanted an clear and simple format of how my machines where configured without always having to mess with `Vagrantfile` which can get messing, and repetitive.
 
 ### Varrgrant.json format
 
@@ -343,11 +259,18 @@ Example syncing multiple folders:
 ]
 ```
 
-#### Customize
-* `customize` - Reconfigure default settings for the virtual machine
+#### Settings
+* `settings` - Reconfigure default settings for the virtual machine
 	* `memory` - Set the memory allocated to this machine. Defaults to `512`.
 	* `cpu` - Configure the amount of processors the machine needs. Defaults to `1`.
 	* `gui` - Boolean value to control enable/disable a GUI window, supported by VirtualBox and VMWare. Defaults to `false`.
+	* `ssh_username` (string)
+    * `ssh_host` (string)
+    * `ssh_port` (integer)
+    * `ssh_private_key_path` (string)
+    * `forward_agent`(boolean)
+    * `forward_x11` (boolean)
+    * `shell` (string)
 
 Example changing the default memory to 1GiB. Note that this increases the amount of space it takes up on your host system.
 
@@ -355,7 +278,7 @@ Example changing the default memory to 1GiB. Note that this increases the amount
 [
 	{
 		"hostname": ["varrgrant.dev"],
-		"customize" : {
+		"settings" : {
 			"memory": 1024
 		}
 	}
@@ -368,26 +291,13 @@ Example changing the cpus and enabling a GUI.
 [
 	{
 		"hostname": ["varrgrant.dev"],
-		"customize" : {
+		"settings" : {
 			"cpus": 2,
 			"gui": true
 		}
 	}
 ]
 ```
-
-#### SSH Configuration
-
-These should all be self-explainatory.
-
-* `config` Container for SSH parameters
-    * `ssh_username` (string)
-    * `ssh_host` (string)
-    * `ssh_port` (integer)
-    * `ssh_private_key_path` (string)
-    * `forward_agent`(boolean)
-    * `forward_x11` (boolean)
-    * `shell` (string)
 
 Example configuring basic ssh parameters:
 
@@ -398,7 +308,6 @@ Example configuring basic ssh parameters:
 
 		"config" : {
 			"ssh_username" : "vagrant",
-			//"ssh_host" : "",
 			"ssh_port" : 22,
 			"ssh_private_key_path" : "/path/to/private.key",
 			"forward_agent" : true,
@@ -428,21 +337,6 @@ Example port forwarding:
 	}
 ]
 ```
-
-#### VMWare Fusion
-Varrgrant supports VMWare Fusion off the back. You'll need the following requirements before provisioning with VMWare Fusion:
-
-* [VMWare Fusion](http://store.vmware.com/store/vmware/en_US/home) ($59)
-* [Vagrant VMWare Plugin](http://www.vagrantup.com/vmware) ($79)
-
-After purchasing the Vagrant VMWare plugin and installing the license.lic, you'll be able to boot up your environment by specifying vmware fusion as the provider:
-
-```
-vagrant up --provder=vmware_fusion
-```
-
-Bundled in the Vagrantfile is a Ubuntu 12.04 LTS base box: `http://files.vagrantup.com/precise64_vmware.box`
-
 
 #### AMI
 
@@ -498,184 +392,6 @@ Example of a basic configuration of a ubuntu 12.04 LTS instance using the AWS pr
 			"keypair_name" : "aws-keypairname",
 			"private_key_path" : "~/.ssh/aws-keypairname.pem",
 			"username" : "ubuntu"
-		}
-	}
-]
-```
-
-#### Rackspace
-
-Varrgrant supports the [Rackspace provider](https://github.com/mitchellh/vagrant-rackspace). Once you fill out the relevant details, simply run:
-
-```
-vagrant up --provder=rackspace
-```
-
-* `rackspace` - Container for Rackspace parameters
-    * `api_key` - The API key for accessing Rackspace.
-    * `flavor` - The server flavor to boot. This can be a string matching
-  the exact ID or name of the server, or this can be a regular expression
-  to partially match some server flavor.
-    * `image` - The server image to boot. This can be a string matching the
-  exact ID or name of the image, or this can be a regular expression to
-  partially match some image.
-    * `rackspace_region` - The region to hit. By default this is :dfw. Valid options are:
-:dfw, :ord, :lon, :iad, :syd.  Users should preference using this setting over `rackspace_compute_url` setting.
-    * `rackspace_compute_url` - The compute_url to hit. This is good for custom endpoints.
-    * `rackspace_auth_url` - The endpoint to authentication against. By default, vagrant will use the global
-rackspace authentication endpoint for all regions with the exception of :lon. IF :lon region is specified
-vagrant will authenticate against the UK authentication endpoint.
-    * `public_key_path` - The path to a public key to initialize with the remote
-  server. This should be the matching pair for the private key configured
-  with `config.ssh.private_key_path` on Vagrant.
-    * `server_name` - The name of the server within RackSpace Cloud. This
-  defaults to the name of the Vagrant machine (via `config.vm.define`), but
-  can be overridden with this.
-    * `username` - The username with which to access Rackspace.
-    * `disk_config` - Disk Configuration  'AUTO' or 'MANUAL'
-
-Example of a basic configuration of a ubuntu 12.04 LTS instance using the Rackspace provider:
-
-```
-[
-	{
-		"hostname" : "varrgrant.dev",
-		"rackspace" : {
-			"username" : "username",
-			"api_key" : "user-account-api-key",
-			"image" : "80fbcb55-b206-41f9-9bc2-2dd7aac6c061"
-		}
-	}
-]
-```
-
-#### Chef Recipes
-
-Finally, you can specify chef configuration details such as recipes and custom attributes.
-
-Example of booting up an instance with base cookbook (installs tools such as git, vim, subversion, sets the timezone and a whole lot more):
-
-```
-[
-	{
-		"hostname": ["varrgrant.dev"],
-		"ip": ["10.10.10.100"],
-		"chef" : {
-			"recipes" : [
-				"base"
-			]
-		}
-	}
-]
-```
-
-Example of booting up a MySQL database server:
-
-```
-[
-	{
-		"hostname": ["varrgrant.dev"],
-		"ip": ["10.10.10.200"],
-		"chef" : {
-			"recipes" : [
-				"base",
-				"db"
-			]
-		}
-	}
-]
-```
-
-Example of booting up an nginx web server:
-
-```
-[
-	{
-		"hostname": ["varrgrant.dev"],
-		"ip": ["10.10.10.200"],
-		"chef" : {
-			"recipes" : [
-				"base",
-				"web"
-			]
-		}
-	}
-]
-```
-
-Example of booting up:
-
-* a nginx web server,
-* a MySQL database server
-* and installing PHP 5.4 with xdebug and composer
-
-```
-[
-	{
-		"hostname": [ "app" ],
-		"ip": ["10.10.10.100"],
-		"chef" : {
-			"recipes" : [
-				"base",
-				"web",
-				"php"
-			]
-		}
-	},
-	{
-		"hostname": [ "db" ],
-		"ip": ["10.10.10.200"],
-		"chef" : {
-			"recipes" : [
-				"base",
-				"db"
-			]
-		}
-	}
-]
-```
-#### Chef JSON Attributes
-
-Chef allows you to customize cookbook recipes by passing in cookbook attributes in a json format. Whatever cookbooks expose as attributes, they can be overriden which leads to extreme flexibility.
-
-Example of booting up:
-
-* an apache2 (overriding the default nginx) web server,
-* a MySQL database server with a table and user,
-* and installing PHP 5.4 with xdebug and composer:
-
-```
-[
-	{
-		"hostname": [ "app" ],
-		"ip": ["10.10.10.100"],
-		"chef" : {
-			"recipes" : [
-				"base",
-				"web",
-				"php"
-			],
-			"json" : {
-				"web" : {
-					"platform" : "apache2"
-				}
-			}
-		}
-	},
-	{
-		"hostname": [ "db" ],
-		"ip": ["10.10.10.200"],
-		"chef" : {
-			"recipes" : [
-				"base",
-				"db"
-			],
-			"json" : {
-				"db" : {
-					"databases" : ["wordpress"],
-					"users" : ["wordpress"]
-				}
-			}
 		}
 	}
 ]
@@ -745,11 +461,11 @@ Example machine running:
 
 
 ## Review of Varrgrant definitions
-I hope by now you'll see how easy and fun it is to build up your application's infastructure using Varrgrant for Vagrant.
+I hope by now you'll see how easy and fun it is to build up your application's infrastructure using Varrgrant for Vagrant.
 By combining these various definitions together, you can really setup a fully fledged application stack with multiple servers talking to each other, and deploying on the AWS platform.
 
 I hope you enjoy using Varrgrant for Vagrant as much as I do. There are a lot of other secret gems hidden in all the various cookbooks that are waiting to be taking advantage of. Definitely take some time to learn chef basics, and learn how to override attributes, as well as develop your own cookbooks for your use cases.
 
-> Have fun, and Yarr! -_O
+> Yarrty yarr yarr matey -_O
 >
 > Pirate Dunbar
