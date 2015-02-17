@@ -1,0 +1,6 @@
+[
+    {
+        "hostname": "varrgrant.dev",
+        "scripts": "provision-script-example.sh"
+    }
+]
