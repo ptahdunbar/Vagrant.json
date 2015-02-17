@@ -1,0 +1,19 @@
+[
+    {
+        "hostname": "varrgrant.dev",
+        "synced_folders" : [
+            {
+                "host" : "public/",
+                "guest" : "/usr/share/nginx/html/",
+                "create": true,
+                "owner": "www-data",
+                "group": "www-data",
+                "mount_options" : [
+                    "dmode=775",
+                    "fmode=664"
+                ]
+            }
+        ],
+        "scripts": "provision-script.sh"
+    }
+]
