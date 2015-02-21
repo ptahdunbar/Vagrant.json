@@ -1,10 +1,10 @@
 [
     {
-        "hostname": "varrgrant.dev",
+        "hostname": "devops.dev",
         "synced_folders" : [
             {
                 "host" : "public/",
-                "guest" : "/usr/share/nginx/html/",
+                "guest" : "/usr/share/nginx/html",
                 "create": true,
                 "owner": "www-data",
                 "group": "www-data",
