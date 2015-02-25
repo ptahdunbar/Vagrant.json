@@ -7,6 +7,15 @@
 require 'rubygems'
 require 'json'
 
+# Install composer
+system "composer install" unless File.exist? "vendor/autoload.php"
+
+# Install vagrant plugins
+required_plugins = %w(vagrant-cachier vagrant-exec vagrant-pristine vagrant-hostsupdater vagrant-awsinfo vagrant-aws vagrant-digitalocean vagrant-managed-servers)
+required_plugins.each do |plugin|
+    system "vagrant plugin install #{plugin}" unless Vagrant.has_plugin? plugin
+end
+
 # Default to local version of devops.json
 if File.exists? "DevOps.local.json"
 	boxfile = "devops.local.json"
@@ -16,9 +25,18 @@ elsif File.exists? "devops.json"
 	boxfile = "devops.json"
 
 # Create a devops based off the example file.
-elsif File.exists? "devops-example.json"
-	FileUtils.copy_file("devops-example.json", "devops.json")
-	puts "[success] Copied devops-sample.json to devops.json."
+else
+    data = %{[
+    {
+        "hostname": "devops",
+        "scripts": "https://gist.githubusercontent.com/ptahdunbar/e3e44c161149e5164928/raw/9662aa2758726bdad0020cb3a384031e03abf09d/provision-script-example.sh"
+    }
+]}
+	f = File.new("devops.json", "w")
+    f.write(data)
+    f.close
+
+	puts "[success] Created devops.json. Configure your VM and launch vagrant up!"
 	puts "[info] Configure your vagrant environment by adding devops definitions to devops.json."
 	exit
 end
@@ -128,23 +146,28 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
         # SSH Settings override
         #
         if node["settings"]
-            config.ssh.username = node["settings"]["ssh_username"] if node["settings"]["ssh_username"]
-            config.ssh.host = node["settings"]["ssh_host"] if node["settings"]["ssh_host"]
-            config.ssh.port = node["settings"]["ssh_port"] if node["settings"]["ssh_port"]
-            config.ssh.private_key_path = node["settings"]["ssh_private_key_path"] if node["settings"]["ssh_private_key_path"]
-            config.ssh.forward_agent = node["settings"]["forward_agent"] if node["settings"]["forward_agent"]
-            config.ssh.forward_x11 = node["settings"]["forward_x11"] if node["settings"]["forward_x11"]
-            config.ssh.shell = node["settings"]["shell"] if node["settings"]["shell"]
+            configure_node.ssh.username = node["settings"]["ssh_username"] if node["settings"]["ssh_username"]
+            configure_node.ssh.host = node["settings"]["ssh_host"] if node["settings"]["ssh_host"]
+            configure_node.ssh.port = node["settings"]["ssh_port"] if node["settings"]["ssh_port"]
+            configure_node.ssh.private_key_path = node["settings"]["private_key_path"] if node["settings"]["private_key_path"]
+            configure_node.ssh.forward_agent = node["settings"]["forward_agent"] if node["settings"]["forward_agent"]
+            configure_node.ssh.forward_x11 = node["settings"]["forward_x11"] if node["settings"]["forward_x11"]
+            configure_node.ssh.shell = node["settings"]["shell"] if node["settings"]["shell"]
 
             if node["settings"]["disable_default_synced_folder"]
-                config.configure_node.synced_folder ".", "/vagrant", id: "vagrant-root", disabled: true
+                configure_node.configure_node.synced_folder ".", "/vagrant", id: "vagrant-root", disabled: true
             end
         end
         
         #
         # Provider: Virtualbox
         #
-        config.vm.provider :virtualbox do |virtualbox, override|
+        configure_node.vm.provider :virtualbox do |virtualbox, override|
+
+            # DNS fix
+            virtualbox.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
+            virtualbox.customize ["modifyvm", :id, "--natdnsproxy1", "on"]
+
             if node["settings"]
                 virtualbox.gui = true if node["settings"]["gui"]
                 virtualbox.customize ["modifyvm", :id, "--cpus", node["settings"]["cpus"] ] if node["settings"]["cpus"]
@@ -155,7 +178,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
         #
         # Provider: VMWare Fusion
         #
-        config.vm.provider :vmware_fusion do |vmware, override|
+        configure_node.vm.provider :vmware_fusion do |vmware, override|
             if node["settings"]
                 override.vm.node_url = "http://files.vagrantup.com/precise64_vmware.node"
                 vmware.gui = true if node["settings"]["gui"]
@@ -167,48 +190,69 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
         #
         # Provider: Amazon Web Services (AWS)
         #
-        config.vm.provider :aws do |aws, override|
-            if node["ami"]
+        configure_node.vm.provider :aws do |aws, override|
+            if node["aws"]
                 override.vm.box_url = "https://github.com/mitchellh/vagrant-aws/raw/master/dummy.box"
-                override.ssh.private_key_path = node["ami"]["private_key_path"]
-                override.ssh.username = node["ami"]["username"]
 
-                aws.keypair_name = node["ami"]["keypair_name"]
+                # Alternative approach: add this to your .bashrc or .zshrc file
+                # export AWS_SECRET_KEY=secret_key
+                # export AWS_ACCESS_KEY=secret_key
+                aws.access_key_id = node["aws"].include?("access_key_id") ? node["aws"]["access_key_id"] : ENV["AWS_ACCESS_KEY"]
+                aws.secret_access_key = node["aws"].include?("secret_access_key") ? node["aws"]["secret_access_key"] : ENV["AWS_SECRET_KEY"]
 
-                aws.ami = node["ami"]["id"] if node["ami"]["id"]
-                aws.availability_zone = node["ami"]["availability_zone"] if node["ami"]["availability_zone"]
-                aws.region = node["ami"]["region"] if node["ami"]["region"]
-                aws.instance_type = node["ami"]["instance_type"] if node["ami"]["instance_type"]
-                aws.security_groups = node["ami"]["security_groups"] if node["ami"]["security_groups"]
-                aws.iam_instance_profile_arn = node["ami"]["iam_instance_profile_arn"] if node["ami"]["iam_instance_profile_arn"]
-                aws.iam_instance_profile_name = node["ami"]["iam_instance_profile_name"] if node["ami"]["iam_instance_profile_name"]
-                aws.use_iam_profile = node["ami"]["use_iam_profile"] if node["ami"]["use_iam_profile"]
-                aws.private_ip_address = node["ami"]["private_ip_address"] if node["ami"]["private_ip_address"]
-                aws.subnet_id = node["ami"]["subnet_id"] if node["ami"]["subnet_id"]
-                aws.tags = node["ami"]["tags"] if node["ami"]["tags"]
-                aws.user_data = node["ami"]["user_data"] if node["ami"]["user_data"]
+                # Required
+                override.ssh.private_key_path = node["aws"]["private_key_path"]
+                override.ssh.username = node["aws"]["username"]
+                aws.keypair_name = node["aws"]["keypair_name"]
+
+                # Optional
+                aws.security_groups = node["aws"].include?("security_groups") ? node["aws"]["security_groups"] : 'default'
+                aws.ami = node["aws"].include?("ami") ? node["aws"]["ami"] : 'ami-9a562df2'
+                aws.region = node["aws"].include?("region") ? node["aws"]["region"] : 'us-east-1'
+                aws.availability_zone = node["aws"]["availability_zone"] if node["aws"]["availability_zone"]
+                aws.instance_type = node["aws"].include?("instance_type") ? node["aws"]["instance_type"] : 'm3.medium'
+                aws.subnet_id = node["aws"]["subnet_id"] if node["aws"]["subnet_id"]
+                aws.elastic_ip = node["aws"]["elastic_ip"] if node["aws"]["elastic_ip"]
+
+                aws.session_token = node["aws"]["session_token"] if node["aws"]["session_token"]
+                aws.use_iam_profile = node["aws"]["use_iam_profile"] if node["aws"]["use_iam_profile"]
+                aws.private_ip_address = node["aws"]["private_ip_address"] if node["aws"]["private_ip_address"]
+                aws.tags = node["aws"]["tags"] if node["aws"]["tags"]
+                aws.package_tags = node["aws"]["package_tags"] if node["aws"]["package_tags"]
+                aws.user_data = node["aws"]["user_data"] if node["aws"]["user_data"]
+                aws.iam_instance_profile_name = node["aws"]["iam_instance_profile_name"] if node["aws"]["iam_instance_profile_name"]
+                aws.iam_instance_profile_arn = node["aws"]["iam_instance_profile_arn"] if node["aws"]["iam_instance_profile_arn"]
+                aws.instance_package_timeout = node["aws"]["instance_package_timeout"] if node["aws"]["instance_package_timeout"]
+                aws.instance_ready_timeout = node["aws"]["instance_ready_timeout"] if node["aws"]["instance_ready_timeout"]
             end
         end
 
         #
         # Provider: Digital Ocean
         #
-        config.vm.provider :digital_ocean do |digital_ocean, override|
+        configure_node.vm.provider :digital_ocean do |digital_ocean, override|
             if node["digital_ocean"]
                 override.vm.box_url = "https://github.com/smdahlen/vagrant-digitalocean/raw/master/box/digital_ocean.box"
+
+                # Alternative: export DIGITAL_OCEAN_TOKEN=secret_key
+                digital_ocean.token = node["digital_ocean"].include?("token") ? node["digital_ocean"]["token"] : ENV["DIGITAL_OCEAN_TOKEN"]
+
+                # Optional
                 override.ssh.private_key_path = node["digital_ocean"]["private_key_path"]
-
-                digital_ocean.client_id = node["digital_ocean"]["client_id"]
-                digital_ocean.api_key = node["digital_ocean"]["api_key"]
-
-                digital_ocean.ssh_key_name = node["digital_ocean"]["ssh_key_name"] if node["digital_ocean"]["ssh_key_name"]
-                digital_ocean.image = node["digital_ocean"]["image"] if node["digital_ocean"]["image"]
-                digital_ocean.region = node["digital_ocean"]["region"] if node["digital_ocean"]["region"]
-                digital_ocean.size = node["digital_ocean"]["size"] if node["digital_ocean"]["size"]
-                digital_ocean.private_networking = node["digital_ocean"]["private_networking"] if node["digital_ocean"]["private_networking"]
-                digital_ocean.setup = node["digital_ocean"]["setup"] if node["digital_ocean"]["setup"]
+                override.ssh.username = node["digital_ocean"]["username"] if node["digital_ocean"]["username"]
+                digital_ocean.ssh_key_name = node["digital_ocean"].include?("ssh_key_name") ? node["digital_ocean"]["ssh_key_name"] : 'Vagrant'
+                digital_ocean.image = node["digital_ocean"].include?("image") ? node["digital_ocean"]["image"] : 'ubuntu-14-04-x64'
+                digital_ocean.region = node["digital_ocean"].include?("region") ? node["digital_ocean"]["region"] : 'nyc2'
+                digital_ocean.size = node["digital_ocean"].include?("size") ? node["digital_ocean"]["size"] : '512mb'
+                digital_ocean.ipv6 = node["digital_ocean"].include?("ipv6") ? node["digital_ocean"]["ipv6"] : false
+                digital_ocean.private_networking = node["digital_ocean"].include?("private_networking") ? node["digital_ocean"]["private_networking"] : false
+                digital_ocean.backups_enabled = node["digital_ocean"].include?("backups_enabled") ? node["digital_ocean"]["backups_enabled"] : false
+                digital_ocean.setup = node["digital_ocean"].include?("setup") ? node["digital_ocean"]["setup"] : true
             end
         end
+
+        # Speed up vagrant
+        configure_node.cache.scope = :box if Vagrant.has_plugin? "vagrant-cachier"
 
 	  end # config.vm.define
 

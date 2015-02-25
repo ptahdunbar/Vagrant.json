@@ -11,7 +11,7 @@
 ```
 git clone git://github.com/ptahdunbar/DevOps.git new-project
 cd new-project
-./setup.sh
+vagrant up
 ```
 
 # Getting started
@@ -35,6 +35,7 @@ To make your development workflow easier, devops comes bundled with the followin
 * [vagrant-pristine](https://github.com/fgrehm/vagrant-pristine) - Adds pristine command to vagrant.
 * [vagrant-dns](https://github.com/BerlinVagrant/vagrant-dns) - Updates your `/etc/hosts` file with machine IP addresses.
 * [vagrant-hostsupdater](https://github.com/cogitatio/vagrant-hostsupdater) - Updates your `/etc/hosts` file with machine IP addresses.
+* [vagrant-awsinfo](https://github.com/johntdyer/vagrant-awsinfo) - Retrieve AWS data about your instance.
 * [vagrant-aws](https://github.com/mitchellh/vagrant-aws) - Test/deploy to your amazon AWS account.
 * [vagrant-digitalocean](https://github.com/smdahlen/vagrant-digitalocean) - Test/deploy to your Digital Ocean account.
 * [vagrant-managed-servers](https://github.com/tknerr/vagrant-managed-servers) - Test/deploy to any VPS server via SSH.
