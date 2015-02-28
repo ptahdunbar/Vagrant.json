@@ -23,7 +23,7 @@ vagrant up
 `varrgrant.json` provides a json key/value structure to configure your boxes without having to mess with `Vagrantfile`.
 
 
-### Varrgrant configuration
+## Varrgrant configuration
 
 - Settings should be self-explanatory and should mirror the official vagrant API.
 - This is an example `varrgrant.json` file with all available settings.
@@ -31,13 +31,13 @@ vagrant up
 
 ```
 [{
-	"hostname": "presvarrs.dev",
+	"hostname": "varrgrant.dev",
 	"box": "ubuntu/trusty64",
 	"ip": "10.10.10.100",
 	"scripts": [
 		"ops/provisioning/base.sh"
 	],
-	"github_ssh_keys": [
+	"users": [
 		"github-username",
 		"another-user"
 	],
@@ -110,10 +110,12 @@ Required definitions:
 - keypair_name
 - private_key_path
 
+#### Example definition
+
 ```
 [
     {
-        "hostname": "pressvarrs",
+        "hostname": "varrgrant",
         "aws": {
             "access_key_id": "xxxxxxxxxx",
             "secret_access_key": "xxxxxxxxxx",
@@ -125,7 +127,7 @@ Required definitions:
 ]
 ```
 
-### Recommendations:
+### Recommendations
 
 - Read up on [all available configuration settings](https://github.com/mitchellh/vagrant-aws) for vagrant-aws.
 - Consider setting `elastic_ip` to true for more longer lived instances.
@@ -134,7 +136,7 @@ Required definitions:
 - [Check out the AWS documentation](http://aws.amazon.com/ec2/instance-types/) on various instance types available.
 
 
-# Example varrgrant.json file for Digital Ocean
+### Example varrgrant.json file for Digital Ocean
 
 ```
 vagrant up --provider=digital_ocean
@@ -144,10 +146,12 @@ Required definitions:
 - token
 - private_key_path
 
+#### Example definition
+
 ```
 [
     {
-        "hostname": "pressvarrs",
+        "hostname": "varrgrant",
         "digital_ocean": {
             "token": "xxxxxxxxxx",
             "private_key_path": "~/.ssh/my-do-keypair.pem"
@@ -179,6 +183,8 @@ To make your development workflow easier, varrgrant comes bundled with the follo
 
 # Troubleshooting
 
+* [Open an issue](https://github.com/ptahdunbar/Varrgrant-for-Vagrant/issues/new) if you need help or have a question
+
 ```
 VPCResourceNotSpecified => The specified instance type can only be used in a VPC. A subnet ID or network interface ID is required to carry out the request.
 ```
@@ -191,7 +197,6 @@ No host IP was given to the Vagrant core NFS helper. This is an internal error t
 ```
    - Remove any NFS flags from your shared_folders definition in order to use AWS
 
-
-> Yarrty yarr yarr matey -_O
+> Yarrty yarr matey -_O
 >
 > Pirate Dunbar
