@@ -1,6 +1,6 @@
-# Varrgrant for Vagrant
+# Vagrant.json
 
-> Vagrantfile can get pretty messy with bigger projects. Varrgrant simplifies VM configuration/setup with a varrgrant.json file and familiar key/value pairs.
+> Vagrantfile can get pretty messy with bigger projects. Vagrant.json simplifies VM configuration/setup for individuals and team projects.
 
 ## Requirements
 * [VirtualBox](https://www.virtualbox.org/) or [AWS account](http://aws.amazon.com/) or [DigitalOcean account](http://digitalocean.com/).
@@ -9,27 +9,27 @@
 # Installation
 
 ```
-git clone git://github.com/ptahdunbar/Varrgrant-for-Vagrant.git new-project && cd new-project
+git clone git://github.com/ptahdunbar/Vagrant.git new-project && cd new-project
 vagrant up
 ```
 
 # Getting started
-* Customize `varrgrant.json` with your VM settings (see the example files for ideas).
+* Customize `Vagrant.json` with your VM settings (see the example files for ideas).
 * `vagrant up`
 
-## What is varrgrant.json?
-`varrgrant.json` provides a json key/value structure to configure your boxes without having to mess with `Vagrantfile`.
+## What is Vagrant.json?
+`Vagrant.json` provides a json key/value structure to configure your boxes without having to mess with `Vagrantfile`.
 
 
-## Varrgrant configuration
+## Vagrantfile configuration
 
 - Settings should be self-explanatory and should mirror the official vagrant API.
-- This is an example `varrgrant.json` file with all available settings.
+- This is an example `Vagrant.json` file with all available settings.
 - Please note that you probably don't need all these configured. This is just an example to copy/paste from.
 
 ```
 [{
-	"hostname": "varrgrant.dev",
+	"hostname": "vagrant.dev",
 	"box": "ubuntu/trusty64",
 	"scripts": [
 		"ops/provisioning/base.sh"
@@ -92,9 +92,9 @@ vagrant up
 }]
 ```
 
-See `Vagrantfile` for all configuration settings.
+See [Vagrantfile](https://github.com/ptahdunbar/Vagrantfile/blob/master/Vagrantfile) for all configuration settings.
 
-### Example varrgrant.json file for AWS
+### Example Vagrant.json file for AWS
 Create a new EC2 instance on the AWS platform.
 
 ```
@@ -112,7 +112,7 @@ Required definitions:
 ```
 [
     {
-        "hostname": "varrgrant",
+        "hostname": "vagrant",
         "aws": {
             "access_key_id": "xxxxxxxxxx",
             "secret_access_key": "xxxxxxxxxx",
@@ -129,11 +129,11 @@ Required definitions:
 - Read up on [all available configuration settings](https://github.com/mitchellh/vagrant-aws) for vagrant-aws.
 - Consider setting `elastic_ip` to true for more longer lived instances.
 - Use your `subnet_id` to boot up smaller instances outside of your VPC.
-- Consider adding your AWS credentials to your `.bashrc` or `.zshrc` file and remove it from `varrgrant.json`.
+- Consider adding your AWS credentials to your `.bashrc` or `.zshrc` file and remove it from `Vagrant.json`.
 - [Check out the AWS documentation](http://aws.amazon.com/ec2/instance-types/) on various instance types available.
 
 
-### Example varrgrant.json file for Digital Ocean
+### Example Vagrant.json file for Digital Ocean
 
 ```
 vagrant up --provider=digital_ocean
@@ -148,7 +148,7 @@ Required definitions:
 ```
 [
     {
-        "hostname": "varrgrant",
+        "hostname": "vagrant",
         "digital_ocean": {
             "token": "xxxxxxxxxx",
             "private_key_path": "~/.ssh/my-do-keypair.pem"
@@ -163,12 +163,12 @@ Required definitions:
 
 ### Defining multiple VMs
 
-Here's an example varrgrant.json config for 3 VMs:
+Here's an example Vagrant.json config for 3 VMs:
 
 ```
 [
     {
-        "hostname": "webapp",
+        "hostname": "vagrant",
         "users": "githubusername",
         "synced_folders": [
             {
@@ -212,15 +212,15 @@ Here's an example varrgrant.json config for 3 VMs:
 ]
 ```
 
-## Varrgrant.local.json
+## Vagrant.local.json
 
-Optionally create a `varrgrant.local.json` (which is private and .gitignore) for testing/debugging or when working in a team.
+Optionally create a `Vagrant.local.json` (which is private and .gitignore) for testing/debugging or when working in a team.
 
 ## Vagrant plugins
-To make your development workflow easier, varrgrant comes bundled with the following [vagrant plugins](https://github.com/mitchellh/vagrant/wiki/Available-Vagrant-Plugins):
+Vagrant.json To make your development workflow easier comes bundled with the following [vagrant plugins](https://github.com/mitchellh/vagrant/wiki/Available-Vagrant-Plugins):
 
 * [vagrant-cachier](https://github.com/fgrehm/vagrant-cachier) - Speeds up apt-get.
-* [vagrant-exec](https://github.com/p0deje/vagrant-exec) - Run one-liner commands into a machine, without ssh'ing into it.
+* [vagrant-exec](https://github.com/p0deje/vagrant-exec) - Run one-liner commands into a machine from the host
 * [vagrant-pristine](https://github.com/fgrehm/vagrant-pristine) - Adds pristine command to vagrant.
 * [vagrant-dns](https://github.com/BerlinVagrant/vagrant-dns) - Updates your `/etc/hosts` file with machine IP addresses.
 * [vagrant-hostsupdater](https://github.com/cogitatio/vagrant-hostsupdater) - Updates your `/etc/hosts` file with machine IP addresses.
@@ -231,7 +231,7 @@ To make your development workflow easier, varrgrant comes bundled with the follo
 
 ## Troubleshooting
 
-* [Open an issue](https://github.com/ptahdunbar/Varrgrant-for-Vagrant/issues/new) if you need help or have a question
+* [Open an issue](https://github.com/ptahdunbar/Vagrant/issues/new) if you need help or have a question
 
 ```
 VPCResourceNotSpecified => The specified instance type can only be used in a VPC. A subnet ID or network interface ID is required to carry out the request.

@@ -16,27 +16,27 @@ required_plugins.each do |plugin|
     system "vagrant plugin install #{plugin}" unless Vagrant.has_plugin? plugin
 end
 
-# Default to local version of varrgrant.json
-if File.exists? "varrgrant.local.json"
-	boxfile = "varrgrant.local.json"
+# Try Vagrant.local.json first
+if File.exists? "Vagrant.local.json"
+	boxfile = "Vagrant.local.json"
 
-# If not try varrgrant.json
-elsif File.exists? "varrgrant.json"
-	boxfile = "varrgrant.json"
+# Okay, try Vagrant.json
+elsif File.exists? "Vagrant.json"
+	boxfile = "Vagrant.json"
 
-# Create a varrgrant based off the example file.
+# Create a Vagrant based off the example file.
 else
     data = %{[
     {
-        "hostname": "pressvarrs"
+        "hostname": "vagrant"
     }
 ]}
-	f = File.new("varrgrant.json", "w")
+	f = File.new("Vagrant.json", "w")
     f.write(data)
     f.close
 
-	puts "[success] Created varrgrant.json. Configure your VM and launch vagrant up!"
-	puts "[info] Configure your vagrant environment by adding varrgrant definitions to varrgrant.json."
+	puts "[success] Created Vagrant.json. Configure your VM and launch vagrant up!"
+	puts "[info] Configure your vagrant environment by adding Vagrant definitions to Vagrant.json."
 	exit
 end
 
