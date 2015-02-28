@@ -1,6 +1,6 @@
 # Varrgrant for Vagrant
 
-> Vagrantfile can get pretty messy with bigger projects. Varrgrant simplifies VM configuration/setup with a JSON file and familiar key/value pairs.
+> Vagrantfile can get pretty messy with bigger projects. Varrgrant simplifies VM configuration/setup with a varrgrant.json file and familiar key/value pairs.
 
 ## Requirements
 * [VirtualBox](https://www.virtualbox.org/) or [AWS account](http://aws.amazon.com/) or [DigitalOcean account](http://digitalocean.com/).
