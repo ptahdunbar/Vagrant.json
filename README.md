@@ -25,13 +25,12 @@ vagrant up
 
 - Settings should be self-explanatory and should mirror the official vagrant API.
 - This is an example `varrgrant.json` file with all available settings.
-- Please not that you probably don't need all these configured.
+- Please note that you probably don't need all these configured. This is just an example to copy/paste from.
 
 ```
 [{
 	"hostname": "varrgrant.dev",
 	"box": "ubuntu/trusty64",
-	"ip": "10.10.10.100",
 	"scripts": [
 		"ops/provisioning/base.sh"
 	],
