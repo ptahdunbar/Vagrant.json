@@ -14,8 +14,7 @@ vagrant up
 ```
 
 # Getting started
-* Start by running the `vagrant` command or manually create a `varrgrant.json` file.
-* Next, fill out the `varrgrant.json` file describing your environment (see the example files for ideas).
+* Customize `varrgrant.json` with your VM settings (see the example files for ideas).
 * `vagrant up`
 
 ## What is varrgrant.json?
