@@ -1,4 +1,4 @@
-# Varrgrant
+# Varrgrant for Vagrant
 
 > Bootstrap your application stack and maintain development/production parity. Inspired by [the 12factor app](http://12factor.net/) and the sheer pain of doing sysadmin work, ugh.
 
@@ -168,7 +168,7 @@ Required definitions:
 
 Optionally create a `varrgrant.local.json` (which is private and .gitignore) for testing/debugging or when working in a team.
 
-# Vagrant plugins
+## Vagrant plugins
 To make your development workflow easier, varrgrant comes bundled with the following [vagrant plugins](https://github.com/mitchellh/vagrant/wiki/Available-Vagrant-Plugins):
 
 * [vagrant-cachier](https://github.com/fgrehm/vagrant-cachier) - Speeds up apt-get.
@@ -181,7 +181,7 @@ To make your development workflow easier, varrgrant comes bundled with the follo
 * [vagrant-digitalocean](https://github.com/smdahlen/vagrant-digitalocean) - Test/deploy to your Digital Ocean account.
 * [vagrant-managed-servers](https://github.com/tknerr/vagrant-managed-servers) - Test/deploy to any VPS server via SSH.
 
-# Troubleshooting
+## Troubleshooting
 
 * [Open an issue](https://github.com/ptahdunbar/Varrgrant-for-Vagrant/issues/new) if you need help or have a question
 
