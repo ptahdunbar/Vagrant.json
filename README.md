@@ -9,8 +9,7 @@
 # Installation
 
 ```
-git clone git://github.com/ptahdunbar/Varrgrant-for-Vagrant.git new-project
-cd new-project
+git clone git://github.com/ptahdunbar/Varrgrant-for-Vagrant.git new-project && cd new-project
 vagrant up
 ```
 
