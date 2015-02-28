@@ -1,6 +1,6 @@
 # Varrgrant for Vagrant
 
-> Bootstrap your application stack and maintain development/production parity. Inspired by [the 12factor app](http://12factor.net/) and the sheer pain of doing sysadmin work, ugh.
+> Vagrantfile can get pretty messy with bigger projects. Varrgrant simplifies VM configuration/setup with a JSON file and familiar key/value pairs.
 
 ## Requirements
 * [VirtualBox](https://www.virtualbox.org/) or [AWS account](http://aws.amazon.com/) or [DigitalOcean account](http://digitalocean.com/).
