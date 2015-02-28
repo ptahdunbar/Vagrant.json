@@ -2,7 +2,7 @@
 # https://docs.vagrantup.com.
 #
 # For a complete reference of Varrgrant for Vagrant, please see the online documentation at
-# https://github.com/ptahdunbar/Varrgrant-for-Vagrant
+# https://github.com/ptahdunbar/Vagrant.json
 
 require 'rubygems'
 require 'json'
