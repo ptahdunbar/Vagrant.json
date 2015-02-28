@@ -34,7 +34,7 @@ vagrant up
 	"scripts": [
 		"ops/provisioning/base.sh"
 	],
-	"users": [
+	"github_ssh_keys": [
 		"github-username",
 		"another-user"
 	],
@@ -169,7 +169,7 @@ Here's an example Vagrant.json config for 3 VMs:
 [
     {
         "hostname": "vagrant",
-        "users": "githubusername",
+        "github_ssh_keys": "githubusername",
         "synced_folders": [
             {
                 "host" : ".",
