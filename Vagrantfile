@@ -151,7 +151,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
             configure_node.ssh.private_key_path = node["settings"]["private_key_path"] if node["settings"]["private_key_path"]
             configure_node.ssh.forward_agent = node["settings"]["forward_agent"] if node["settings"]["forward_agent"]
             configure_node.ssh.forward_x11 = node["settings"]["forward_x11"] if node["settings"]["forward_x11"]
-            configure_node.ssh.insert_key = node["settings"].include? "insert_key" ? node["settings"]["insert_key"] : true
+            configure_node.ssh.insert_key = node["settings"].include?("insert_key") ? node["settings"]["insert_key"] : true
 
             if node["settings"]["disable_default_synced_folder"]
                 configure_node.configure_node.synced_folder ".", "/vagrant", id: "vagrant-root", disabled: true
