@@ -9,7 +9,7 @@
 # Installation
 
 ```
-git clone git://github.com/ptahdunbar/Vagrant.git new-project && cd new-project
+git clone git://github.com/ptahdunbar/Vagrant.json.git new-project && cd new-project
 vagrant up
 ```
 
@@ -92,7 +92,7 @@ vagrant up
 }]
 ```
 
-See [Vagrantfile](https://github.com/ptahdunbar/Vagrantfile/blob/master/Vagrantfile) for all configuration settings.
+See [Vagrantfile](https://github.com/ptahdunbar/Vagrant.jsonfile/blob/master/Vagrantfile) for all configuration settings.
 
 ### Example Vagrant.json file for AWS
 Create a new EC2 instance on the AWS platform.
@@ -231,7 +231,7 @@ Vagrant.json To make your development workflow easier comes bundled with the fol
 
 ## Troubleshooting
 
-* [Open an issue](https://github.com/ptahdunbar/Vagrant/issues/new) if you need help or have a question
+* [Open an issue](https://github.com/ptahdunbar/Vagrant.json/issues/new) if you need help or have a question
 
 ```
 VPCResourceNotSpecified => The specified instance type can only be used in a VPC. A subnet ID or network interface ID is required to carry out the request.
