@@ -231,8 +231,6 @@ Vagrant.json To make your development workflow easier comes bundled with the fol
 
 ## Troubleshooting
 
-* [Open an issue](https://github.com/ptahdunbar/Vagrant.json/issues/new) if you need help or have a question
-
 ```
 VPCResourceNotSpecified => The specified instance type can only be used in a VPC. A subnet ID or network interface ID is required to carry out the request.
 ```
@@ -244,6 +242,10 @@ VPCResourceNotSpecified => The specified instance type can only be used in a VPC
 No host IP was given to the Vagrant core NFS helper. This is an internal error that should be reported as a bug.
 ```
    - Remove any NFS flags from your shared_folders definition in order to use AWS
+
+## Getting Help
+
+[Submit an issue](https://github.com/ptahdunbar/PressVarrs/issues/new) and I can provide further assistance.
 
 > Yarrty yarr matey -_O
 >
