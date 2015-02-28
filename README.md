@@ -161,6 +161,57 @@ Required definitions:
 
 - Read up on [all available configuration settings](https://github.com/smdahlen/vagrant-digitalocean) for vagrant-digitalocean.
 
+### Defining multiple VMs
+
+Here's an example varrgrant.json config for 3 VMs:
+
+```
+[
+    {
+        "hostname": "webapp",
+        "users": "githubusername",
+        "synced_folders": [
+            {
+                "host" : ".",
+                "guest" : "/srv",
+                "group": "www-data",
+                "mount_options": [
+                    "dmode=775",
+                    "fmode=667"
+                ]
+            }
+        ],
+        "scripts": [
+            "provision-nginx.sh",
+            "provision-php.sh"
+        ],
+    },
+    {
+        "hostname": "db",
+        "settings": {
+            "disable_default_synced_folder": true,
+        },
+        "forwarded_ports": [
+            { "host": "3306", "guest": "3306" }
+        ],
+        "scripts": "provision-db.sh",
+    },
+    {
+        "hostname": "nodeapp",
+        "forwarded_ports": [
+            { "host": "3000", "guest": "3000" }
+        ],
+        "synced_folders": [
+            {
+                "host" : "node-app",
+                "guest" : "/var/www"
+            }
+        ],
+        "scripts": "provision-node.sh",
+    }
+]
+```
+
 ## Varrgrant.local.json
 
 Optionally create a `varrgrant.local.json` (which is private and .gitignore) for testing/debugging or when working in a team.
