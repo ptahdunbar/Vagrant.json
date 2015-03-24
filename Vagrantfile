@@ -204,8 +204,10 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
                 override.ssh.username = node["aws"]["username"]
                 aws.keypair_name = node["aws"]["keypair_name"]
 
-                # Optional
-                aws.security_groups = node["aws"].include?("security_groups") ? node["aws"]["security_groups"] : [ "default" ]
+                # No need to set security groups for instances in yout private network
+                if ! node["aws"]["subnet_id"]
+                    aws.security_groups = node["aws"].include?("security_groups") ? node["aws"]["security_groups"] : [ "default" ]
+                end
                 aws.ami = node["aws"].include?("ami") ? node["aws"]["ami"] : "ami-9a562df2"
                 aws.region = node["aws"].include?("region") ? node["aws"]["region"] : "us-east-1"
                 aws.availability_zone = node["aws"]["availability_zone"] if node["aws"]["availability_zone"]
