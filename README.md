@@ -40,7 +40,7 @@ vagrant up
 	],
 	"forwarded_ports": [
 		{ "host": "3000", "guest": "3000" },
-		{ "host": "8000", "guest": "80" },
+		{ "host": "8000", "guest": "80" }
 	],
 	"synced_folders": [
 		{
@@ -61,7 +61,7 @@ vagrant up
 		"insert_key": true,
 		"disable_default_synced_folder": false,
 		"cpus": 1,
-		"memory": 512
+		"memory": 512,
 		"gui": false
 	],
 	"aws": {
@@ -75,7 +75,7 @@ vagrant up
 		"ami" : "ami-9a562df2",
 		"region" : "us-east-1",
 		"instance_type" : "m3.medium",
-		"elastic_ip" : false,
+		"elastic_ip" : false
 	},
 	"digital_ocean": {
 		"token": "xxxxxxxxxxxxxxxxxxxxxxxx",
@@ -87,8 +87,8 @@ vagrant up
 		"ipv6": false,
 		"private_networking": false,
 		"backups_enabled": false,
-		"setup": true,
-	},
+		"setup": true
+	}
 }]
 ```
 
@@ -184,17 +184,17 @@ Here's an example Vagrant.json config for 3 VMs:
         "scripts": [
             "provision-nginx.sh",
             "provision-php.sh"
-        ],
+        ]
     },
     {
         "hostname": "db",
         "settings": {
-            "disable_default_synced_folder": true,
+            "disable_default_synced_folder": true
         },
         "forwarded_ports": [
             { "host": "3306", "guest": "3306" }
         ],
-        "scripts": "provision-db.sh",
+        "scripts": "provision-db.sh"
     },
     {
         "hostname": "nodeapp",
@@ -207,7 +207,7 @@ Here's an example Vagrant.json config for 3 VMs:
                 "guest" : "/var/www"
             }
         ],
-        "scripts": "provision-node.sh",
+        "scripts": "provision-node.sh"
     }
 ]
 ```
