@@ -132,7 +132,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
             node["synced_folders"].each do |params|
                 next unless ( params.include?('host') or params.include?('guest') )
 
-                folder_args = Hash[params.map{ |key, value| next if ( !params.include? 'host' or !params.include? 'guest' ); [key.to_sym, value] }]
+                folder_args = params.dup
+                folder_args.delete('host')
+                folder_args.delete('guest')
 
                 # debug arguments passed
                 #puts "folder_args: #{folder_args}"
