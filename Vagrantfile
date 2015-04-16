@@ -18,11 +18,11 @@ end
 
 # Try Vagrant.local.json first
 if File.exists? "Vagrant.local.json"
-	boxfile = "Vagrant.local.json"
+    boxfile = "Vagrant.local.json"
 
 # Okay, try Vagrant.json
 elsif File.exists? "Vagrant.json"
-	boxfile = "Vagrant.json"
+    boxfile = "Vagrant.json"
 
 # Create a Vagrant based off the example file.
 else
@@ -31,13 +31,13 @@ else
         "hostname": "vagrant"
     }
 ]}
-	f = File.new("Vagrant.json", "w")
+    f = File.new("Vagrant.json", "w")
     f.write(data)
     f.close
 
-	puts "[success] Created Vagrant.json. Configure your VM and launch vagrant up!"
-	puts "[info] Configure your vagrant environment by adding Vagrant definitions to Vagrant.json."
-	exit
+    puts "[success] Created Vagrant.json. Configure your VM and launch vagrant up!"
+    puts "[info] Configure your vagrant environment by adding Vagrant definitions to Vagrant.json."
+    exit
 end
 
 boxes = JSON.parse(File.read(boxfile));
@@ -52,13 +52,13 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     #
     # Loop through each node
     #
-  	boxes.each_with_index do |node, index|
+    boxes.each_with_index do |node, index|
 
       # GUARD: hostname is the only required param.
-  	  next unless node["hostname"]
+      next unless node["hostname"]
 
-  	  # get the hostname and tld
-  	  if node["hostname"].include? "."
+      # get the hostname and tld
+      if node["hostname"].include? "."
         tld = node["hostname"].split('.').last;
         hostname = node["hostname"]
         host = node["hostname"].split('.').first
@@ -66,7 +66,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
         tld = "dev"
         hostname = node["hostname"] + "." + tld
         host = node["hostname"]
-  	  end
+      end
 
       # get the box to use for this node
       box = node["box"] ? node["box"] : "ubuntu/trusty64"
@@ -85,18 +85,18 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       #
       # VM CONFIGURATION
       #
-	  config.vm.define "#{hostname}" do |configure_node|
+      config.vm.define "#{hostname}" do |configure_node|
 
-	    # Set the box to use for this node
-	    configure_node.vm.box = box
+        # Set the box to use for this node
+        configure_node.vm.box = box
 
         # Set the guest IP address
-	    configure_node.vm.network "private_network", ip: ip_address, :netmask => "255.255.255.0"
+        configure_node.vm.network "private_network", ip: ip_address, :netmask => "255.255.255.0"
 
-		#
-		# Configure: Shell Script provisioning
-		# Learn more: https://docs.vagrantup.com/v2/provisioning/shell.html
-		#
+        #
+        # Configure: Shell Script provisioning
+        # Learn more: https://docs.vagrantup.com/v2/provisioning/shell.html
+        #
         if node["scripts"]
             if node["scripts"].kind_of? String
                 configure_node.vm.provision "shell", path: "#{node["scripts"]}"
@@ -292,7 +292,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
             end
         end
 
-	  end # config.vm.define
+      end # config.vm.define
 
-  	end # boxes.each
+    end # boxes.each
 end # Vagrant.configure
