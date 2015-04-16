@@ -169,8 +169,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
             if node["settings"]
                 virtualbox.gui = true if node["settings"]["gui"]
-                virtualbox.customize ["modifyvm", :id, "--cpus", node["settings"]["cpus"] ] if node["settings"]["cpus"]
-                virtualbox.customize ["modifyvm", :id, "--memory", node["settings"]["memory"] ] if node["settings"]["memory"]
+                virtualbox.cpus = node["settings"]["cpus"] if node["settings"]["cpus"]
+                virtualbox.memory = node["settings"]["memory"] if node["settings"]["memory"]
             end
         end
         
