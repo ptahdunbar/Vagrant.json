@@ -158,6 +158,28 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
             if node["settings"]["disable_default_synced_folder"]
                 configure_node.configure_node.synced_folder ".", "/vagrant", id: "vagrant-root", disabled: true
             end
+
+            if node["settings"]["optimize_vm"]
+                host = RbConfig::CONFIG['host_os']
+
+                # Give VM 1/4 system memory & access to all cpu cores on the host
+                if host =~ /darwin/
+                    cpus = `sysctl -n hw.ncpu`.to_i
+                    memory = `sysctl -n hw.memsize`.to_i / 1024 / 1024 / 4
+                elsif host =~ /linux/
+                    cpus = `nproc`.to_i
+                    memory = `grep 'MemTotal' /proc/meminfo | sed -e 's/MemTotal://' -e 's/ kB//'`.to_i / 1024 / 4
+                else # sorry Windows folks, I can't help you
+                    cpus = 2
+                    memory = 1024
+                end
+
+                #puts "Optimized CPUs: #{cpus}"
+                #puts "Optimized Memory: #{memory}"
+
+                virtualbox.memory = memory
+                virtualbox.cpus = cpus
+            end
         end
         
         #
