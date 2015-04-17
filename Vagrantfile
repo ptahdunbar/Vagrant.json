@@ -135,8 +135,10 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
                 folder_args = params.dup
                 folder_args.delete('host')
                 folder_args.delete('guest')
+                folder_args = Hash[folder_args.map{ |key, value| [key.to_sym, value] }]
 
                 # debug arguments passed
+                #puts "params: #{params}"
                 #puts "folder_args: #{folder_args}"
 
                 configure_node.vm.synced_folder params["host"], params["guest"], folder_args
