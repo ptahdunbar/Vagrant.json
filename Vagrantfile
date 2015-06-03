@@ -109,6 +109,17 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
         # Configure: Shell Script provisioning
         # Learn more: https://docs.vagrantup.com/v2/provisioning/shell.html
         #
+        if node["provision"]
+            if node["provision"].kind_of? String
+                configure_node.vm.provision "shell", path: "#{node["provision"]}"
+            else
+                node["provision"].each do |path|
+                    configure_node.vm.provision "shell", path: "#{path}"
+                end
+            end
+        end
+
+        # backwards compat.
         if node["scripts"]
             if node["scripts"].kind_of? String
                 configure_node.vm.provision "shell", path: "#{node["scripts"]}"
