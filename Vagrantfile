@@ -6,12 +6,24 @@
 
 require 'rubygems'
 require 'json'
+require 'rbconfig'
 
-# Install composer
-system "composer install" unless File.exist? "vendor/autoload.php"
+# Store the current version of Vagrant
+vagrant_version = Vagrant::VERSION.sub(/^v/, '')
+
+# Are we on windows? Yeah, let's remember this just in case.
+is_windows = (RbConfig::CONFIG['host_os'] =~ /mswin|mingw|cygwin/)
+
+# Store the current path
+vagrant_dir = File.expand_path(File.dirname(__FILE__))
 
 # Install vagrant plugins
-required_plugins = %w(vagrant-triggers vagrant-cachier vagrant-exec vagrant-pristine vagrant-hostsupdater vagrant-awsinfo vagrant-aws vagrant-digitalocean vagrant-managed-servers)
+required_plugins = %w(vagrant-triggers vagrant-cachier vagrant-exec vagrant-pristine vagrant-awsinfo vagrant-aws vagrant-digitalocean vagrant-managed-servers)
+
+if ! is_windows
+    (required_plugins ||= []) << "vagrant-hostsupdater"
+end
+
 required_plugins.each do |plugin|
     system "vagrant plugin install #{plugin}" unless Vagrant.has_plugin? plugin
 end
@@ -110,9 +122,11 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
         #
         # DNS settings
         #
-        configure_node.hostsupdater.remove_on_suspend = true
-        configure_node.vm.hostname = hostname
-        #configure_node.hostsupdater.aliases = box["hostname"] if box["hostname"].kind_of?(Array)
+        if Vagrant.has_plugin? "vagrant-hostsupdater"
+            configure_node.hostsupdater.remove_on_suspend = true
+            configure_node.vm.hostname = hostname
+            #configure_node.hostsupdater.aliases = box["hostname"] if box["hostname"].kind_of?(Array)
+        end
 
         #
         # Port forwarding
