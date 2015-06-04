@@ -17,6 +17,18 @@ is_windows = (RbConfig::CONFIG['host_os'] =~ /mswin|mingw|cygwin/)
 # Store the current path
 vagrant_dir = File.expand_path(File.dirname(__FILE__))
 
+# Customfile - POSSIBLY UNSTABLE
+#
+# Use this to insert your own (and possibly rewrite) Vagrant config lines. Helpful
+# for mapping additional drives. If a file 'Customfile' exists in the same directory
+# as this Vagrantfile, it will be evaluated as ruby inline as it loads.
+#
+# Note that if you find yourself using a Customfile for anything crazy or specifying
+# different provisioning, then you may want to consider a new Vagrantfile entirely.
+if File.exists?(File.join(vagrant_dir,'Customfile')) then
+    eval(IO.read(File.join(vagrant_dir,'Customfile')), binding)
+end
+
 # Install vagrant plugins
 required_plugins = %w(vagrant-triggers vagrant-cachier vagrant-exec vagrant-pristine vagrant-awsinfo vagrant-aws vagrant-digitalocean vagrant-managed-servers)
 
