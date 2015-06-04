@@ -306,19 +306,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
         # Speed up vagrant
         configure_node.cache.scope = :box if Vagrant.has_plugin? "vagrant-cachier"
 
-        #
-        # Github SSH keys
-        #
-        if node["github_ssh_keys"]
-            configure_node.exec.commands '*', directory: '~', prepend: 'sudo'
-
-            configure_node.trigger.after :provision, :stdout => true do
-                run "vagrant exec 'cp /srv/ops/provisioning/pubkeys.sh /usr/local/bin && sudo chmod +x /usr/local/bin/*'"
-                run "vagrant exec 'pubkeys.sh #{node["github_ssh_keys"].join(" ")}'" if node["github_ssh_keys"].kind_of? Array
-                run "vagrant exec 'pubkeys.sh #{node["github_ssh_keys"]}'" if node["github_ssh_keys"].kind_of? String
-            end
-        end
-
       end # config.vm.define
 
     end # boxes.each
