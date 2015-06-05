@@ -182,6 +182,24 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
             end
         end
 
+        # For convenience.
+        if node["shared_folders"]
+            node["shared_folders"].each do |params|
+                next unless ( params.include?('host') or params.include?('guest') )
+
+                folder_args = params.dup
+                folder_args.delete('host')
+                folder_args.delete('guest')
+                folder_args = Hash[folder_args.map{ |key, value| [key.to_sym, value] }]
+
+                # debug arguments passed
+                #puts "params: #{params}"
+                #puts "folder_args: #{folder_args}"
+
+                configure_node.vm.synced_folder params["host"], params["guest"], folder_args
+            end
+        end
+
         #
         # SSH Settings override
         #
