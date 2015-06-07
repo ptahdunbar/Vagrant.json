@@ -17,6 +17,9 @@ is_windows = (RbConfig::CONFIG['host_os'] =~ /mswin|mingw|cygwin/)
 # Store the current path
 vagrant_dir = File.expand_path(File.dirname(__FILE__))
 
+# install vagrant plugins from Customfile.
+required_plugins = %w()
+
 # Customfile - POSSIBLY UNSTABLE
 #
 # Use this to insert your own (and possibly rewrite) Vagrant config lines. Helpful
@@ -27,13 +30,6 @@ vagrant_dir = File.expand_path(File.dirname(__FILE__))
 # different provisioning, then you may want to consider a new Vagrantfile entirely.
 if File.exists?(File.join(vagrant_dir,'Customfile')) then
     eval(IO.read(File.join(vagrant_dir,'Customfile')), binding)
-end
-
-# Install vagrant plugins
-required_plugins = %w(vagrant-triggers vagrant-cachier vagrant-exec vagrant-pristine vagrant-awsinfo vagrant-aws vagrant-digitalocean vagrant-managed-servers)
-
-if ! is_windows
-    (required_plugins ||= []) << "vagrant-hostsupdater"
 end
 
 required_plugins.each do |plugin|
