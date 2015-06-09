@@ -17,8 +17,29 @@ is_windows = (RbConfig::CONFIG['host_os'] =~ /mswin|mingw|cygwin/)
 # Store the current path
 vagrant_dir = File.expand_path(File.dirname(__FILE__))
 
-# install vagrant plugins from Customfile.
+# Optional. install vagrant plugins from your Customfile. i.e.:
+# required_plugins = %w(vagrant-exec vagrant-pristine)
 required_plugins = %w()
+
+required_plugins.each do |plugin|
+    system "vagrant plugin install #{plugin}" unless Vagrant.has_plugin? plugin
+end
+
+# Try Vagrant.local.json first
+if File.exists? "Vagrant.local.json"
+    boxfile = "Vagrant.local.json"
+
+# Okay, try Vagrant.json
+elsif File.exists? "Vagrant.json"
+    boxfile = "Vagrant.json"
+end
+
+# pass in a boxfile to load.
+ARGV.each do |arg|
+    if arg.include?('--boxfile=')
+        boxfile = arg.gsub('--boxfile=', '')
+    end
+end
 
 # Customfile - POSSIBLY UNSTABLE
 #
@@ -32,19 +53,9 @@ if File.exists?(File.join(vagrant_dir,'Customfile')) then
     eval(IO.read(File.join(vagrant_dir,'Customfile')), binding)
 end
 
-required_plugins.each do |plugin|
-    system "vagrant plugin install #{plugin}" unless Vagrant.has_plugin? plugin
-end
-
-# Try Vagrant.local.json first
-if File.exists? "Vagrant.local.json"
-    boxfile = "Vagrant.local.json"
-
-# Okay, try Vagrant.json
-elsif File.exists? "Vagrant.json"
-    boxfile = "Vagrant.json"
-
 # Create a Vagrant based off the example file.
+if File.exists? boxfile
+    boxes = JSON.parse(File.read(boxfile));
 else
     data = %{[
     {
@@ -60,17 +71,14 @@ else
     exit
 end
 
-boxes = JSON.parse(File.read(boxfile));
-
 puts "[info] Loading box configuration from #{boxfile}"
 
 # Vagrantfile API version.
 VAGRANTFILE_API_VERSION = "2"
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
-
     #
-    # Loop through each node
+    # Loop and configure each VM defined in boxfile.
     #
     boxes.each_with_index do |node, index|
 
@@ -106,6 +114,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       # VM CONFIGURATION
       #
       config.vm.define "#{hostname}" do |configure_node|
+
+        # Fixes annoying error: 'stdin: is not a tty'
+        configure_node.ssh.pty = true
 
         # Set the box to use for this node
         configure_node.vm.box = box
@@ -144,7 +155,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
         if Vagrant.has_plugin? "vagrant-hostsupdater"
             configure_node.hostsupdater.remove_on_suspend = true
             configure_node.vm.hostname = hostname
-            #configure_node.hostsupdater.aliases = box["hostname"] if box["hostname"].kind_of?(Array)
+            configure_node.hostsupdater.aliases = box["hostname"] if box["hostname"].kind_of?(Array)
         end
 
         #
@@ -178,7 +189,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
             end
         end
 
-        # For convenience.
+        #
+        # For convenience :)
+        #
         if node["shared_folders"]
             node["shared_folders"].each do |params|
                 next unless ( params.include?('host') or params.include?('guest') )
@@ -234,7 +247,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
                 virtualbox.cpus = cpus
             end
         end
-        
+
         #
         # Provider: Virtualbox
         #
@@ -250,7 +263,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
                 virtualbox.memory = node["settings"]["memory"] if node["settings"]["memory"]
             end
         end
-        
+
         #
         # Provider: VMWare Fusion
         #
@@ -270,33 +283,30 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
             if node["aws"]
                 override.vm.box_url = "https://github.com/mitchellh/vagrant-aws/raw/master/dummy.box"
 
-                # Alternative approach: add this to your .bashrc or .zshrc file
+                # Required parameters
+                aws.ami = node["aws"]["ami"] || 'ami-d05e75b8'
+                aws.instance_type = node["aws"]["instance_type"] || 't2.micro'
+                aws.keypair_name = node["aws"]["keypair_name"] || raise("An error occurred. Missing aws 'keypair name'.")
+                override.ssh.username = node["aws"]["username"] || 'ubuntu'
+                override.ssh.private_key_path = node["aws"]["private_key_path"]
+
+                # Alternative approach: add keys into your .bashrc or .zshrc profile
                 # export AWS_SECRET_KEY=secret_key
                 # export AWS_ACCESS_KEY=secret_key
-                aws.access_key_id = node["aws"].include?("access_key_id") ? node["aws"]["access_key_id"] : ENV["AWS_ACCESS_KEY"]
-                aws.secret_access_key = node["aws"].include?("secret_access_key") ? node["aws"]["secret_access_key"] : ENV["AWS_SECRET_KEY"]
+                aws.access_key_id = node["aws"]["access_key_id"] || ENV["AWS_ACCESS_KEY"]
+                aws.secret_access_key = node["aws"]["secret_access_key"] || ENV["AWS_SECRET_KEY"]
+                aws.session_token = node["aws"]["session_token"] || ENV["AWS_SESSION_TOKEN"]
 
-                # Required
-                override.ssh.private_key_path = node["aws"]["private_key_path"]
-                override.ssh.username = node["aws"]["username"]
-                aws.keypair_name = node["aws"]["keypair_name"]
-
-                # No need to set security groups for instances in yout private network
-                if ! node["aws"]["subnet_id"]
-                    aws.security_groups = node["aws"].include?("security_groups") ? node["aws"]["security_groups"] : [ "default" ]
-                end
-                aws.ami = node["aws"].include?("ami") ? node["aws"]["ami"] : "ami-9a562df2"
-                aws.region = node["aws"].include?("region") ? node["aws"]["region"] : "us-east-1"
+                # optional settings
+                aws.region = node["aws"]["region"] if node["aws"]["region"]
                 aws.availability_zone = node["aws"]["availability_zone"] if node["aws"]["availability_zone"]
-                aws.instance_type = node["aws"].include?("instance_type") ? node["aws"]["instance_type"] : "m3.medium"
+                aws.security_groups = node["aws"]["security_groups"] if node["aws"]["security_groups"]
+                aws.tags = node["aws"]["tags"] if node["aws"]["tags"]
                 aws.subnet_id = node["aws"]["subnet_id"] if node["aws"]["subnet_id"]
+                aws.availability_zone = node["aws"]["availability_zone"] if node["aws"]["availability_zone"]
                 aws.elastic_ip = node["aws"]["elastic_ip"] if node["aws"]["elastic_ip"]
-
-                aws.session_token = node["aws"]["session_token"] if node["aws"]["session_token"]
                 aws.use_iam_profile = node["aws"]["use_iam_profile"] if node["aws"]["use_iam_profile"]
                 aws.private_ip_address = node["aws"]["private_ip_address"] if node["aws"]["private_ip_address"]
-                aws.tags = node["aws"]["tags"] if node["aws"]["tags"]
-                aws.package_tags = node["aws"]["package_tags"] if node["aws"]["package_tags"]
                 aws.user_data = node["aws"]["user_data"] if node["aws"]["user_data"]
                 aws.iam_instance_profile_name = node["aws"]["iam_instance_profile_name"] if node["aws"]["iam_instance_profile_name"]
                 aws.iam_instance_profile_arn = node["aws"]["iam_instance_profile_arn"] if node["aws"]["iam_instance_profile_arn"]
